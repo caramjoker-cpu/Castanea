@@ -1,0 +1,907 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10241b"><title>CASTANEA · Forest Premium V0.9.4</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+<style>:root{color-scheme:dark;--bg:#091611;--panel:#12241b;--stroke:#31483a;--text:#ecf3e9;--muted:#b2c0b6;--accent:#aece8c}*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}header{min-height:66px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 18px;gap:8px;border-bottom:1px solid var(--stroke)}header strong{letter-spacing:.14em;font-size:19px}header span{color:var(--muted)}.shell{display:grid;grid-template-columns:minmax(0,1fr) 335px;height:calc(100dvh - 66px);min-height:570px}#map{height:100%;background:#263a2d}.side{overflow-y:auto;padding:16px;border-left:1px solid var(--stroke);display:flex;flex-direction:column;gap:13px}.card{background:var(--panel);border:1px solid var(--stroke);border-radius:14px;padding:15px}h2{font-size:16px;margin:0 0 9px}p{line-height:1.4;color:var(--muted);margin:6px 0 12px}.small{font-size:12px;color:var(--muted)}.stat{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{padding:10px;background:#1a3023;border-radius:9px}.metric b{display:block;font-size:19px;padding-top:5px}.controls{display:flex;gap:7px;flex-wrap:wrap}button,select,input{font:inherit}button{border:1px solid #587153;color:#f1f6ed;background:#24442d;padding:9px 10px;border-radius:8px;cursor:pointer;min-height:38px}button.primary{background:#799c58;color:#0c1a10;font-weight:700;border-color:#799c58}button:disabled{opacity:.5;cursor:not-allowed}input,select{width:100%;background:#0e2117;border:1px solid #506652;border-radius:8px;color:var(--text);padding:10px;margin:5px 0 10px}label{font-size:12px;color:#c7d4c6}li{padding:8px 0;border-bottom:1px solid var(--stroke)}li:last-child{border-bottom:0}.chip{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:7px}.toast{position:fixed;bottom:16px;left:16px;z-index:2000;max-width:320px;padding:12px;background:#133b22;border:1px solid #9db88d;border-radius:9px;display:none}.modebutton.active{background:#799c58;color:#0c1a10;font-weight:700}.warning{color:#f6cf91}.boundary-stat{margin-top:8px;border-top:1px solid var(--stroke);padding-top:9px}.leaflet-container{font:inherit}.leaflet-draw-toolbar a{background-color:#fff!important}@media(max-width:790px){header{min-height:70px}.shell{height:auto;min-height:0;display:flex;flex-direction:column}#map{height:55dvh;min-height:350px}.side{border-left:0;overflow:visible}.card{padding:13px}} .notice{border-left:3px solid #d5aa64;padding:8px 10px;background:#2b291c;color:#f4ddb3;border-radius:5px}.layercheck{display:flex;align-items:center;gap:8px;margin:8px 0}.layercheck input{width:auto;margin:0}  .tabs{display:flex;gap:7px;flex-wrap:wrap}.tabs button.active{background:#799c58;color:#0c1a10;font-weight:700}.optional{color:#aabbab}.entryrow{background:#1b3023;border-radius:9px;padding:10px;margin-bottom:8px}.entryrow .headline{display:flex;align-items:center;justify-content:space-between;gap:6px}.entryrow .small{margin-top:3px}.muted{opacity:.8}.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}.hidden{display:none!important}.pill{display:inline-block;padding:4px 9px;border-radius:15px;background:#294632;font-size:12px}.warn{color:#f6cf91}button.danger{border-color:#ab756b;background:#432725} .side section[hidden]{display:none} 
+[hidden]{display:none!important} .mainnav{display:flex;gap:8px;padding:12px max(18px,calc((100vw - 1450px)/2));overflow-x:auto;background:#102218;border-bottom:1px solid var(--stroke);scrollbar-width:none}.mainnav button{flex-shrink:0;white-space:nowrap;background:transparent;border:1px solid transparent;color:#b5c5b6;border-radius:10px;padding:12px 17px}.mainnav button.active{background:#264831;border-color:#5f805e;color:#ecf7df;font-weight:700}.dashboard{max-width:1450px;margin:0 auto;padding:26px 22px 60px}.welcome{display:flex;justify-content:space-between;gap:20px;align-items:center;margin:0 0 25px}.eyebrow{font-size:10px;letter-spacing:.17em;color:#9ab788;font-weight:800}.welcome h1{font-size:clamp(26px,3vw,40px);letter-spacing:-.04em;margin:7px 0}.welcome p{margin:0}.welcome-meta{text-align:right;line-height:2;color:#aabaae;font-size:12px}.welcome-meta strong{color:#f0f7e9;font-size:22px}.welcome-meta small{display:block;margin-top:-8px}.dashboard-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:18px}.dash-card{background:linear-gradient(135deg,#152d20,#102219);border:1px solid #395440;border-radius:20px;padding:20px;min-width:0;text-align:left;color:var(--text)}button.dash-card{width:100%;cursor:pointer}.map-preview-card{display:flex;flex-direction:column;overflow:hidden}.card-heading{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:14px}.card-heading h2{font-size:20px;margin:7px 0 0}.open-pill{color:#b9dd9e;border:1px solid #45664d;padding:7px 12px;border-radius:30px;font-size:12px;white-space:nowrap}#previewMap{height:240px;border-radius:13px;overflow:hidden;pointer-events:none;background:#334a37}.map-foot{display:flex;justify-content:space-between;gap:12px;padding-top:14px;color:#afc6b3;font-size:12px}.map-foot strong{color:#f2f8ee}.weather-symbol{font-size:33px}.weather-main{font-weight:800;font-size:clamp(30px,4vw,44px);margin:15px 0 5px}.weather-sub{font-size:13px;color:#bac8bb}.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0}.weather-grid div{border-top:1px solid #405542;padding-top:10px}.weather-grid span{display:block;color:#a7b8ab;font-size:11px}.weather-grid strong{display:block;margin-top:5px;font-size:16px}.footnote{font-size:12px;color:#a1b4a4}.subtle-button{background:transparent!important;border-color:#516c55!important;color:#cde6bb!important;margin-top:12px}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:21px 0}.summary-metric{background:#1d3827;border:1px solid #35543d;padding:16px;border-radius:13px}.summary-metric span{color:#b6c7b7;font-size:12px;display:block}.summary-metric strong{font-size:clamp(21px,2.5vw,30px);display:block;margin-top:6px}.quick-actions{display:flex;flex-direction:column;gap:12px;margin-top:16px}.quick-actions button{width:100%;display:flex;justify-content:space-between;padding:15px;background:#213e2b;border-color:#426449;text-align:left}.quick-card .footnote{margin-top:18px}.shell{height:calc(100dvh - 132px)}.shell.nonmap{display:block;height:auto;min-height:calc(100dvh - 150px);max-width:1120px;margin:0 auto}.shell.nonmap #map{display:none}.shell.nonmap .side{border:0;overflow:visible}.shell.nonmap .side .card{margin-bottom:12px}.range-label{text-align:right;color:#cbe3b3;margin:-6px 0 18px}.cal-result{display:flex;align-items:center;justify-content:space-between;background:#1f3e2a;border-radius:12px;padding:15px;margin:16px 0}.cal-result strong{font-size:18px}#calForm[hidden],#calEmpty[hidden]{display:none!important}
+@media(max-width:820px){.dashboard{padding:17px 13px 45px}.dashboard-grid{grid-template-columns:1fr}.welcome{align-items:flex-start}.welcome-meta{font-size:10px}.welcome-meta strong{font-size:17px}.dash-card{padding:17px}#previewMap{height:250px}.mainnav{padding:10px}.mainnav button{padding:11px 13px}.shell.nonmap .side{padding:12px}.shell{height:auto;min-height:0;display:flex;flex-direction:column}.shell #map{height:55dvh;min-height:350px}}
+
+.counter{display:flex;align-items:center;gap:8px}.counter input{flex:1;min-width:0;text-align:center}.counter button{font-size:20px;min-width:43px;font-weight:700}.sync-status{padding:10px;border:1px solid #52694c;border-radius:9px;margin:10px 0;color:#d3e4d3}.sync-actions{display:flex;flex-wrap:wrap;gap:7px}.sync-actions button{flex:1}.sync-note{color:#ebcfa2}.entryrow button{margin-top:5px}.harvest-mode button.active{background:#799c58;color:#081a10;font-weight:700}.harvest-advanced[hidden]{display:none!important}
+.goal-widget{margin:11px 0;padding:9px 0}.goal-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:7px}.goal-track{height:12px;background:#304536;border-radius:16px;overflow:hidden;margin-bottom:6px}.goal-fill{height:100%;background:linear-gradient(90deg,#69954f,#b8d985);border-radius:16px;transition:width .4s}#goalProgress{margin-top:15px}textarea{width:100%;background:#0e2117;border:1px solid #506652;border-radius:8px;color:var(--text);padding:10px;margin:5px 0 10px;font:inherit}.goal-mini{margin-top:10px;border-top:1px solid #405642;padding-top:10px}.goal-mini .goal-widget{margin:5px 0}.sync-status{line-height:1.5} 
+
+/* V0.7.1 - interface repensée, sans altérer le stockage */
+.header-cloud{margin-left:auto;display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:7px 10px;border-radius:30px;border:1px solid #4a654c;background:#1d3324;color:#c9ddbd;font-size:12px}.header-cloud.good{color:#b9e88f;border-color:#537b4d}.header-cloud.warn{color:#f4d19c;border-color:#916a3d}
+.settings-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.settings-links button{white-space:normal;min-height:48px}
+.dashboard-goals-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:16px}.dashboard-goals-head button{font-size:12px;padding:7px;min-height:32px}
+.milestone-row{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.milestone{border-radius:22px;border:1px solid #415846;color:#94a898;background:#1b3023;padding:6px 9px;font-size:11px}.milestone.unlocked{border-color:#83a66a;color:#e0f2d0;background:#38502d}
+.business-goals{background:#11261b;border:1px solid #3c6045;border-radius:15px;margin:4px 0 16px;padding:0 12px}.business-goals>summary{cursor:pointer;padding:16px 5px;font-size:16px;font-weight:750;color:#d5ecc0}.business-goals>.card{margin-bottom:12px}.simulation-card{border-color:#4f704b}
+.goal-fill{animation:goal-fill-in .65s ease-out}@keyframes goal-fill-in{from{max-width:0}}@media(prefers-reduced-motion:reduce){.goal-fill{animation:none;transition:none!important}}
+@media(max-width:600px){header{gap:6px}.header-cloud{margin-left:0;font-size:11px}.mainnav{gap:4px;scrollbar-width:thin}.mainnav button{padding:10px 11px}.settings-links{grid-template-columns:1fr}}
+
+/* V0.7.1 — raffinement visuel; carte/meteo et logique des données inchangées */
+.dashboard-grid{align-items:start}
+.dashboard-summary{grid-column:1;grid-row:2}
+.quick-card{grid-column:2;grid-row:2;align-self:start}
+.dashboard-summary .summary-grid.primary-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:16px 0 12px}
+.dashboard-summary .summary-grid.primary-metrics .summary-metric{padding:13px 11px;min-width:0}
+.dashboard-summary .summary-grid.primary-metrics strong{font-size:clamp(19px,2vw,27px);letter-spacing:-.025em;overflow-wrap:anywhere}
+.dashboard-summary .summary-grid.secondary-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:12px 0;gap:9px}
+.dashboard-summary .summary-grid.secondary-metrics strong{font-size:clamp(17px,2vw,23px)}
+.extra-metrics{border:1px solid #415c45;border-radius:11px;background:#152b1e;margin:5px 0 15px;padding:0 12px}
+.extra-metrics>summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;list-style:none;color:#c4dcbf;padding:13px 0;font-size:13px;font-weight:650}
+.extra-metrics>summary::-webkit-details-marker{display:none}
+.extra-metrics[open]>summary span{transform:rotate(180deg)}
+.quick-card .quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}
+.quick-card .quick-actions button{min-height:58px;padding:12px 10px;font-size:13px;gap:6px;line-height:1.3;align-items:center}
+.quick-card .footnote{margin-top:13px}
+.dashboard-goals-head{padding-top:8px;border-top:1px solid #385541}
+.goal-mini .goal-track{height:13px;background:#304a37;position:relative;border:1px solid #3c5842}
+.goal-mini .goal-fill{background:linear-gradient(90deg,#709a50,#bbdb81);border-radius:14px;transition:width .65s cubic-bezier(.18,.7,.28,1)}
+.goal-mini .goal-top strong{color:#bfdf9d;font-variant-numeric:tabular-nums}
+.milestone-row .milestone{transition:background .35s ease,border-color .35s ease;color:#b0c5ad}
+.milestone-row .milestone.unlocked{background:#314c2d;color:#efffe2;border-color:#b3d27a}
+@media(max-width:1100px) and (min-width:821px){.quick-card .quick-actions{grid-template-columns:1fr}}
+@media(max-width:820px){.dashboard-summary,.quick-card{grid-column:auto;grid-row:auto}.dashboard-summary .summary-grid.primary-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:520px){.dashboard-summary .summary-grid.primary-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-summary .summary-grid.primary-metrics .summary-metric:last-child{grid-column:span 2}.dashboard-summary .summary-grid.secondary-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-card .quick-actions{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.goal-mini .goal-fill,.milestone-row .milestone{animation:none!important;transition:none!important}}
+
+/* V0.7.1 - Analytics & Experience, sans dépendance graphique */
+.analytics-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:end}
+.analytics-filters{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0}
+.analytics-filters label{font-size:12px;color:#b9cbb9;flex:1 1 138px;margin:0}
+.analytics-filters select{width:100%;min-height:43px;margin-top:5px}
+.analytics-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:12px 0 18px}
+.analytics-kpi{background:#1c3828;border:1px solid #395842;border-radius:12px;padding:13px;min-width:0}
+.analytics-kpi span{display:block;color:#aec2b0;font-size:12px}.analytics-kpi strong{display:block;font-size:clamp(17px,2vw,25px);margin-top:7px;overflow-wrap:anywhere}
+.analytics-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:15px}
+.analytics-card{border:1px solid #385440;background:#12281c;border-radius:14px;padding:16px;min-width:0}
+.analytics-card h3{font-size:16px;margin:0 0 5px}.analytics-card p{margin:0 0 10px;color:#b5c7b8;font-size:12px;line-height:1.5}
+.analytics-chart{min-height:235px;display:flex;align-items:center;justify-content:center}
+.analytics-chart svg{width:100%;max-width:100%;height:auto;overflow:visible}
+.analytics-empty{font-size:13px;color:#aabfae;border:1px dashed #48614e;border-radius:10px;padding:20px;text-align:center;width:100%}
+.analytics-legend{display:flex;gap:13px;flex-wrap:wrap;font-size:12px;color:#c8d7c7;margin-top:8px}
+.analytics-legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+.analytics-note{font-size:12px;color:#acc0ad;margin-top:13px}
+@media(max-width:900px){.analytics-cards{grid-template-columns:1fr}.analytics-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.analytics-filters label{flex:1 1 46%}.analytics-card{padding:12px}.analytics-chart{min-height:185px}}
+
+/* V0.7.1 — statistiques compactes et navigation tactile */
+.analytics-view-switch{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 15px;padding:5px;border:1px solid #37543e;border-radius:13px;background:#0d2116}
+.analytics-view-switch button{flex:1 1 110px;margin:0;border-radius:9px;min-height:43px;background:transparent;border:1px solid transparent;color:#c8d8c8;font-weight:650}
+.analytics-view-switch button[aria-pressed="true"]{background:#355a3d;border-color:#729967;color:#fff}
+.analytics-card[hidden],.analytics-detail[hidden]{display:none!important}
+.analytics-point-summary{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #496b4e;background:#1c3b29;border-radius:12px;padding:14px;margin:6px 0}
+.analytics-point-summary b{font-size:clamp(19px,3vw,27px);color:#c7e69e;white-space:nowrap}
+.analytics-point-summary span{color:#c7dac6;font-size:13px}
+.analytics-chart{min-height:0;max-height:260px}
+.analytics-chart svg{max-height:250px}
+.analytics-card{align-self:start}
+.analytics-card p{margin-bottom:8px}
+.analytics-card:focus-within{border-color:#8bbd79}
+.analytics-tap-help{font-size:11px;color:#9eb9a4;margin-top:6px}
+.analytics-detail>summary{cursor:pointer;font-weight:700;font-size:15px;padding:12px 2px;list-style-position:inside}
+.analytics-detail>summary:focus-visible,.analytics-view-switch button:focus-visible{outline:2px solid #b0db8b;outline-offset:2px}
+.analytics-detail .stat{margin-top:12px}
+@media(max-width:900px){.analytics-cards{grid-template-columns:1fr}.analytics-chart svg{max-height:215px}}
+@media(max-width:480px){.analytics-card{padding:13px}.analytics-chart svg{max-height:190px}.analytics-point-summary{padding:12px}.analytics-point-summary b{font-size:21px}}
+
+/* V0.7.1 — Analytics Polish : navigation compacte, responsive et sûre */
+.analytics-view-switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;flex-wrap:nowrap;padding:4px;width:100%}
+.analytics-view-switch button{min-width:0;min-height:42px;padding:7px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(11px,2.7vw,14px);flex:none;line-height:1.2}
+.analytics-buyer-single{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#1c3b29;border:1px solid #496b4e;border-radius:12px;padding:13px 15px;margin:6px 0;min-width:0}
+.analytics-buyer-single .buyer-name{font-size:14px;font-weight:650;color:#e2efdc;overflow-wrap:anywhere}
+.analytics-buyer-single .buyer-sub{color:#aebfae;font-size:12px;margin-top:4px}
+.analytics-buyer-single .buyer-value{font-size:clamp(19px,3vw,24px);font-weight:750;color:#c7e69e;text-align:right;white-space:nowrap}
+.analytics-buyer-single .buyer-share{color:#a9c8a1;text-align:right;font-size:12px;margin-top:4px}
+@media(max-width:480px){
+  .analytics-view-switch{gap:3px;padding:3px;border-radius:11px}
+  .analytics-view-switch button{min-height:44px;padding:8px 2px;font-size:12px;letter-spacing:-.02em}
+  .analytics-chart{max-height:200px}
+  .analytics-card{padding:12px}
+  .analytics-buyer-single{padding:12px;gap:7px}
+}
+@media(prefers-reduced-motion:reduce){.analytics-view-switch button{transition:none}}
+
+/* CASTANEA V0.7.1 — commandes de terrain, sans modification des données */
+.field-nav{display:none}.field-harvest-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.field-harvest-heading h2{margin:5px 0}.field-local-tag{font-size:11px;color:#b7d8a0;border:1px solid #456d4c;border-radius:20px;padding:6px 8px;white-space:nowrap}.field-quantity-actions{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}.field-quantity-actions button{flex:1 1 125px;background:#284732;border-color:#638461;font-weight:650;min-height:48px}.field-quantity-actions .field-reset{background:transparent;color:#c5d7bf;font-size:12px}.field-estimate{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border:1px solid #507151}.field-estimate b{font-size:25px;white-space:nowrap}.field-save{display:block;width:100%;margin-top:10px;min-height:52px;font-size:16px}.field-harvest-card .counter button{min-width:52px;min-height:52px;font-size:25px}.field-harvest-card .counter input{min-height:52px;font-size:18px;margin:5px 0}.field-harvest-card input,.field-harvest-card select{min-height:46px}
+@media(max-width:650px){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}
+  .dashboard{padding-bottom:100px}.mainnav{display:none}
+  .field-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;position:fixed;bottom:0;left:0;right:0;z-index:1700;gap:3px;padding:6px 7px calc(7px + env(safe-area-inset-bottom,0px));background:rgba(12,31,21,.97);border-top:1px solid #547255;box-shadow:0 -7px 23px rgba(0,0,0,.34)}
+  .field-nav>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;min-height:54px;padding:4px 1px;border:1px solid transparent;background:transparent;border-radius:12px;color:#bbcfbd}
+  .field-nav>button span{font-size:23px;line-height:1}.field-nav>button small{font-size:10px;line-height:1.1;white-space:nowrap}
+  .field-nav>button.active,.field-nav>button[aria-expanded="true"]{background:#2b4b32;border-color:#648362;color:#f0f8e8}
+  .field-more-menu{position:absolute;right:9px;bottom:calc(75px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;min-width:195px;background:#173224;border:1px solid #668264;padding:10px;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+  .field-more-menu[hidden]{display:none}.field-more-menu button{min-height:49px;text-align:left}
+  .shell.nonmap{min-height:0}.shell.nonmap .side{padding-bottom:30px}.toast{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+  .field-harvest-card .row{flex-direction:column;gap:0}
+  .field-harvest-card label{font-size:13px}
+  .field-harvest-card .counter button{min-width:60px;min-height:60px}
+  .field-harvest-card .counter input{min-height:60px}
+  .field-harvest-heading{align-items:flex-start}.field-local-tag{white-space:normal;text-align:right}
+  .field-harvest-card .field-estimate{position:sticky;bottom:calc(74px + env(safe-area-inset-bottom,0px));z-index:100;background:#1b3927;border-radius:12px;box-shadow:0 -6px 15px rgba(0,0,0,.24)}
+}
+@media(prefers-reduced-motion:reduce){.field-nav,.field-harvest-card *{scroll-behavior:auto!important;transition:none!important}}
+
+/* V0.7.1 — formulaire de terrain compact et poids de contenants modifiables */
+.field-harvest-card{display:flex;flex-direction:column;gap:12px}
+.field-harvest-card .field-harvest-heading h2{margin-bottom:0}
+.field-topline{display:grid;grid-template-columns:1.5fr 1fr;gap:12px;align-items:end}
+.field-topline label,.field-settings label{display:block;margin:0}
+.field-topline select,.field-topline input{margin-top:6px}
+.field-counter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field-counter-tile{background:#183324;border:1px solid #436348;border-radius:15px;padding:12px;min-width:0}
+.field-tile-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px;margin-bottom:9px}
+.field-tile-header strong{font-size:17px}.field-tile-header span{font-size:12px;color:#b5d5a4}
+.field-counter-tile .counter{display:grid;grid-template-columns:54px minmax(0,1fr) 54px;gap:7px;align-items:stretch}
+.field-counter-tile .counter button{min-width:0;min-height:56px;padding:0;font-size:26px;background:#284933}
+.field-counter-tile .counter input{min-width:0;min-height:56px;margin:0;text-align:center;font-size:23px;padding:5px}
+.field-harvest-card .field-quantity-actions{margin:0;display:grid;grid-template-columns:1fr;gap:9px}
+.field-harvest-card .field-quantity-actions button{min-height:45px;flex:auto}
+.field-harvest-card .field-quantity-actions .field-reset{grid-column:1;min-height:37px}
+.field-harvest-card .field-estimate{margin:0;position:static;z-index:auto;background:#1c3c29;border-radius:13px;box-shadow:none}
+.field-harvest-card .field-save{margin:0;min-height:58px}
+.field-settings{background:#11291c;border:1px solid #416148;border-radius:13px;padding:12px 14px}
+.field-settings summary{cursor:pointer;color:#d6eaca;font-weight:650;list-style-position:inside;line-height:1.5}
+.field-settings-inner{padding-top:14px;display:grid;gap:10px}
+.field-settings-inner .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field-settings-inner input{margin-top:6px}
+.field-harvest-card .harvest-advanced{display:grid;gap:10px}
+.field-harvest-card .harvest-advanced[hidden]{display:none!important}
+.field-footer-note{margin:0;font-size:12px}
+@media(max-width:650px){
+ .field-harvest-card{gap:11px}
+ .field-topline{grid-template-columns:1fr 1fr;gap:10px}
+ .field-counter-grid{grid-template-columns:1fr 1fr;gap:8px}
+ .field-counter-tile{padding:9px 7px}
+ .field-counter-tile .counter{grid-template-columns:38px minmax(0,1fr) 38px;gap:4px}
+ .field-counter-tile .counter button{min-width:0;min-height:53px;font-size:23px}
+ .field-counter-tile .counter input{min-height:53px;font-size:20px;padding:2px}
+ .field-tile-header strong{font-size:15px}.field-tile-header span{font-size:11px}
+ .field-harvest-card .field-estimate{position:static;bottom:auto;box-shadow:none}
+ .field-settings-inner .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+ .field-harvest-card .field-quantity-actions{grid-template-columns:1fr}
+}
+@media(max-width:350px){.field-topline{grid-template-columns:1fr}.field-counter-grid{grid-template-columns:1fr}}
+
+/* CASTANEA V0.9.3 – cartographie intelligente */
+.sector-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.sector-head h2{font-size:18px;margin:5px 0 0}.sector-filters{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}.sector-filters label{min-width:0}.sector-kpis{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}.sector-kpis>div{background:#1c3626;border:1px solid #3c5841;border-radius:10px;padding:12px}.sector-kpis small{display:block;color:#b3c9b4;font-size:11px}.sector-kpis strong{display:block;font-size:18px;margin-top:6px}.sector-legend{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0;font-size:11px;color:#b7cab8}.sector-legend span{display:inline-flex;gap:5px;align-items:center}.sector-legend i{display:inline-block;width:10px;height:10px;border-radius:3px}.sector-ranking{display:grid;gap:9px}.sector-line{border:1px solid #395a40;background:#193125;border-radius:11px;padding:11px;width:100%;text-align:left;display:block}.sector-line:focus-visible{outline:2px solid #b7dc8f}.sector-line-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.sector-line-head strong{white-space:normal;overflow-wrap:anywhere}.sector-line-head b{color:#c7e3aa}.sector-line-sub{color:#b8c9b9;font-size:11px;margin:6px 0}.sector-bar{height:8px;border-radius:10px;background:#344a39;overflow:hidden}.sector-bar>span{display:block;height:100%;border-radius:10px;background:#a7ce7c}.sector-empty{background:#1c3023;border:1px dashed #48624b;border-radius:9px;padding:12px;color:#afc4b2}
+@media(max-width:450px){.sector-filters{grid-template-columns:1fr}.sector-kpis strong{font-size:16px}}
+.boundary-maintenance{margin:12px 0;padding:13px;border:1px solid #47624c;border-radius:12px;background:#142b1d}.boundary-maintenance summary{cursor:pointer;font-weight:650}.boundary-maintenance button{margin-top:9px}.boundary-maintenance .danger{background:#4e2e28;border-color:#98756b}#boundaryEditTools{margin-top:12px}#boundaryEditTools[hidden],#modeBoundary[hidden]{display:none!important}
+.map-drawing-card .controls{margin:12px 0}
+.map-base-options{margin-top:12px;border-top:1px solid rgba(158,195,155,.24);padding-top:12px}
+.map-base-options summary{cursor:pointer;color:#bbd6b5;font-weight:650}
+.map-base-options[open] .controls{margin-top:12px}
+.sector-overview{margin:12px 0 18px;padding:14px;border-radius:14px;background:rgba(153,202,131,.07);border:1px solid rgba(153,202,131,.18)}
+.sector-overview p{margin:9px 0}
+.sector-overview .notice{margin-bottom:0}
+.sector-overview{padding:10px 14px;margin:12px 0}.sector-overview summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700}.sector-overview summary::-webkit-details-marker{display:none}.sector-overview summary::after{content:'⌄';color:#b8d6a1}.sector-overview[open] summary::after{content:'⌃'}.sector-overview-details{padding-top:10px}
+.sector-shortcut{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;margin:12px 0}.sector-shortcut label{margin:0}.sector-shortcut button{white-space:nowrap;min-height:43px}
+.sector-map-popup{min-width:190px;color:#153020;font-family:system-ui,-apple-system,sans-serif}.sector-map-popup strong{font-size:16px}.sector-map-popup .zone-figures{margin:8px 0;line-height:1.6}.sector-map-popup button{padding:9px 12px;border-radius:8px;background:#24583b;border:0;color:white;font-weight:650;cursor:pointer}.sector-map-popup button:focus-visible{outline:3px solid #95b868}
+.sector-line.is-selected{border-color:#b2dc83;background:#274532}.sector-line:active{transform:scale(.995)}
+@media(max-width:420px){.sector-shortcut{grid-template-columns:1fr}.sector-shortcut button{width:100%}}
+#selectedZoneCard:not(:has(#details:not([hidden]))){display:none}
+.calibration-entry .calibration-inner{margin-top:14px}
+.calibration-entry #calibrationModules[hidden]{display:none}
+@media(max-width:640px){.sector-overview{padding:12px}.map-drawing-card .controls button{flex:1}.calibration-entry h2{font-size:1.2rem}}
+
+/* CASTANEA V0.9.4 – FOREST PREMIUM / couche cosmétique uniquement */
+:root{--bg:#081710;--panel:#12271b;--stroke:#385743;--text:#f0f5ed;--muted:#b4c6b8;--accent:#b9d996;--forest-gold:#d2ae78;--premium-edge:rgba(189,220,165,.20);--premium-soft:rgba(149,198,125,.085)}
+html{scroll-behavior:smooth}body{background:radial-gradient(ellipse 100% 480px at 52% -180px,rgba(89,140,83,.16),transparent 75%),var(--bg);-webkit-font-smoothing:antialiased}
+header{background:linear-gradient(110deg,rgba(18,45,30,.99),rgba(9,24,17,.97));box-shadow:0 6px 25px rgba(0,0,0,.12)}
+header strong{color:#f1f9e9;text-shadow:0 1px 12px rgba(162,213,121,.11);letter-spacing:.19em}
+.eyebrow{color:#bbd69f;letter-spacing:.20em}
+.welcome h1{letter-spacing:-.055em;color:#f5faee;text-wrap:balance}
+.welcome-meta strong{font-variant-numeric:tabular-nums;color:#eaf3e2}
+.card,.dash-card,.analytics-card{position:relative;background:linear-gradient(152deg,rgba(24,52,35,.97) 0%,rgba(17,38,27,.99) 57%,rgba(13,32,23,1) 100%);border:1px solid var(--premium-edge);border-radius:20px;box-shadow:0 10px 32px rgba(0,0,0,.12),inset 0 1px 0 rgba(221,246,206,.035)}
+.card::before,.dash-card::before,.analytics-card::before{content:"";position:absolute;top:0;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,rgba(199,230,176,.16),transparent);pointer-events:none}
+.card h2,.dash-card h2,.analytics-card h3{color:#f0f7ec;letter-spacing:-.025em}
+.metric,.summary-metric,.analytics-kpi,.sector-kpis>div{background:linear-gradient(145deg,rgba(38,74,49,.78),rgba(27,57,38,.87));border:1px solid rgba(172,210,160,.16);border-radius:15px;box-shadow:inset 0 1px 0 rgba(246,255,230,.04)}
+.metric b,.summary-metric strong,.analytics-kpi strong,.sector-kpis strong{color:#f3f9eb;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+.summary-metric span,.analytics-kpi span,.metric .small{color:#b9cdb9}
+button{transition:transform .18s ease,background-color .22s ease,border-color .22s ease,box-shadow .22s ease,filter .22s ease}
+button:not(:disabled):active{transform:scale(.975);filter:brightness(1.10)}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid #d5eea9;outline-offset:3px}
+button.primary,.modebutton.active,.tabs button.active{background:linear-gradient(135deg,#9dbd75,#83a960);border-color:#b2d18b;color:#102014;box-shadow:0 5px 14px rgba(13,22,12,.12),inset 0 1px 0 rgba(255,255,255,.19)}
+button.primary:not(:disabled):hover{filter:brightness(1.055)}
+input,select,textarea{background:#0d2318;border-color:#54715b;border-radius:12px;transition:border-color .2s ease,box-shadow .2s ease}
+input:focus,select:focus,textarea:focus{border-color:#b2d391;box-shadow:0 0 0 3px rgba(166,213,129,.12)}
+.mainnav{background:linear-gradient(90deg,#10281b,#0e2218);border-bottom-color:rgba(167,202,146,.17)}
+.mainnav button{transition:background .2s ease,border .2s ease,color .2s ease}
+.mainnav button.active{background:linear-gradient(140deg,#315740,#274b35);border-color:#72956f;box-shadow:inset 0 1px 0 rgba(231,255,215,.12)}
+.header-cloud{background:linear-gradient(145deg,#244631,#1c3526);border-color:#5c8061;box-shadow:inset 0 1px 0 rgba(217,251,201,.06)}
+.dash-card{transition:border-color .23s ease,transform .23s ease,box-shadow .23s ease}
+button.dash-card:hover{border-color:rgba(176,221,145,.47);box-shadow:0 15px 34px rgba(0,0,0,.19)}
+.open-pill{background:rgba(179,218,147,.045);border-color:rgba(176,214,155,.35)}
+#previewMap{border:1px solid rgba(225,245,217,.13);box-shadow:0 7px 17px rgba(0,0,0,.20)}
+.weather-main{color:#f4faed;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.weather-grid div{border-top-color:rgba(163,198,154,.23)}
+.quick-actions button{background:linear-gradient(130deg,#254530,#1f3b2b);border-color:rgba(151,200,141,.28);border-radius:13px}
+.quick-actions button:not(:disabled):hover{background:#2a5237;border-color:#92bf82}
+.goal-track,.goal-mini .goal-track{background:#2e4a36;box-shadow:inset 0 1px 3px rgba(0,0,0,.32);border-radius:100px;overflow:hidden}
+.goal-fill,.goal-mini .goal-fill{background:linear-gradient(90deg,#6e9d58,#b5dc85 65%,#d4ec9b);box-shadow:0 0 12px rgba(188,232,141,.22);transition:width .7s cubic-bezier(.22,.7,.2,1)}
+.milestone.unlocked,.milestone-row .milestone.unlocked{box-shadow:0 0 0 1px rgba(174,218,141,.17),inset 0 1px 0 rgba(237,252,223,.08)}
+.analytics-view-switch{background:#0d2418;border-color:#3c6048;border-radius:15px}
+.analytics-view-switch button[aria-pressed="true"]{background:linear-gradient(130deg,#3d6647,#2e553b);border-color:#82aa79;box-shadow:inset 0 1px 0 rgba(238,255,228,.12)}
+.analytics-point-summary,.analytics-buyer-single{background:linear-gradient(130deg,#21432e,#1a3828);border-color:#567958;box-shadow:inset 0 1px 0 rgba(236,255,223,.05)}
+.analytics-point-summary b,.analytics-buyer-single .buyer-value{color:#cdeba2}
+.field-counter-tile{background:linear-gradient(145deg,#1c3c2a,#173223);border-color:#54755b;border-radius:18px}
+.field-counter-tile .counter button{border-radius:12px;background:linear-gradient(150deg,#315b3d,#294a34);border-color:#6c9270}
+.field-estimate,.field-harvest-card .field-estimate{background:linear-gradient(135deg,#20432f,#183728);border-color:#628361;box-shadow:inset 0 1px 0 rgba(236,255,224,.05)}
+.field-estimate b{color:#edfae8;letter-spacing:-.045em}
+.field-save{font-weight:750;letter-spacing:-.015em}
+.field-settings,.extra-metrics,.business-goals,.sector-overview{border-color:rgba(168,212,147,.23);background:rgba(37,71,46,.25);border-radius:16px}
+.sector-line,.entryrow{border:1px solid rgba(159,200,146,.17);background:linear-gradient(125deg,#1d3a28,#173122);border-radius:13px}
+.sector-line.is-selected{border-color:#b5d88b;box-shadow:0 0 0 2px rgba(177,218,138,.14)}
+.sector-map-popup{line-height:1.45}.leaflet-popup-content-wrapper{border-radius:17px!important;box-shadow:0 12px 40px rgba(0,0,0,.3)!important}.leaflet-popup-tip{box-shadow:none!important}
+.leaflet-control-zoom a,.leaflet-draw-toolbar a{border-radius:5px;transition:filter .15s ease}.leaflet-control-zoom a:active,.leaflet-draw-toolbar a:active{filter:brightness(.9)}
+#map{outline:1px solid rgba(158,203,152,.11);outline-offset:-1px}
+.pill{background:#2d5238;color:#e1f1d8;border:1px solid rgba(173,218,157,.15)}
+.toast{border-radius:14px;box-shadow:0 10px 35px rgba(0,0,0,.32);animation:forest-toast-in .25s ease-out}
+@keyframes forest-toast-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:821px){.dash-card{border-radius:22px}.dashboard-grid{gap:20px}}
+@media(max-width:650px){
+ .field-nav{background:linear-gradient(180deg,rgba(12,35,22,.97),rgba(8,26,17,.985));border-top-color:rgba(153,193,144,.30);box-shadow:0 -10px 36px rgba(0,0,0,.34);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+ .field-nav>button{border-radius:15px;transition:background .2s ease,transform .18s ease}
+ .field-nav>button.active,.field-nav>button[aria-expanded="true"]{background:linear-gradient(135deg,#335d40,#254b35);border-color:#6c9569;box-shadow:inset 0 1px 0 rgba(228,255,211,.11),0 3px 12px rgba(0,0,0,.14)}
+ .field-more-menu{background:linear-gradient(140deg,#1a3929,#122b1e);border-color:#759775;box-shadow:0 15px 40px rgba(0,0,0,.46)}
+ .card,.dash-card,.analytics-card{border-radius:18px}
+ .shell.nonmap .side{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+ .analytics-buyer-single{gap:10px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+</style></head><body>
+<header><div><strong>✳ CASTANEA</strong> <span> / V0.9.4 · Paradela, Tabuaço</span></div><span><button type="button" id="headerCloud" class="header-cloud" aria-label="Ouvrir les paramètres de synchronisation" title="État de la synchronisation">☁ <span id="headerCloudText">Cloud</span></button></header>
+<nav class="mainnav" aria-label="Navigation principale"><button id="tabHome" class="active">⌂ Accueil</button><button id="tabMap">▧ Carte</button><button id="tabHarvest">◉ Ramassage</button><button id="tabBusiness">▣ Business</button><button id="tabStats">▥ Statistiques</button><button id="tabSettings">⚙ Paramètres</button></nav>
+<nav id="fieldNav" class="field-nav" aria-label="Navigation rapide sur téléphone">
+<button type="button" data-field-tab="Home" aria-label="Accueil"><span aria-hidden="true">⌂</span><small>Accueil</small></button>
+<button type="button" data-field-tab="Map" aria-label="Carte"><span aria-hidden="true">▧</span><small>Carte</small></button>
+<button type="button" data-field-tab="Harvest" aria-label="Ramassage"><span aria-hidden="true">◉</span><small>Récolte</small></button>
+<button type="button" data-field-tab="Business" aria-label="Business"><span aria-hidden="true">▣</span><small>Ventes</small></button>
+<button type="button" id="fieldMore" aria-label="Autres rubriques" aria-expanded="false"><span aria-hidden="true">☰</span><small>Plus</small></button>
+<div id="fieldMoreMenu" class="field-more-menu" hidden><button type="button" data-field-tab="Stats">▥ Statistiques</button><button type="button" data-field-tab="Settings">⚙ Paramètres</button></div>
+</nav>
+<div id="dashboard" class="dashboard">
+  <div class="welcome"><div><div class="eyebrow">CAMPAGNE DE RÉCOLTE · PARCELLE 762</div><h1>Vue d'ensemble <span>🌰</span></h1><p>Votre châtaigneraie, votre récolte, au même endroit.</p></div><div class="welcome-meta">PARADELA · TABUAÇO, PORTUGAL<br><strong>7,8415 ha</strong> <small>surface du relevé</small></div></div>
+  <div class="dashboard-grid">
+    <button class="dash-card map-preview-card" id="openMap" title="Ouvrir la carte interactive"><div class="card-heading"><div><span class="eyebrow">CARTOGRAPHIE</span><h2>La châtaigneraie</h2></div><span class="open-pill">Agrandir ↗</span></div><div id="previewMap" aria-hidden="true"></div><div class="map-foot"><span>Artigo 762 · Périmètre de travail</span><strong id="homeBoundary">— ha</strong></div></button>
+    <section class="dash-card weather-card"><div class="card-heading"><div><span class="eyebrow">CONDITIONS LOCALES</span><h2>Météo à Paradela</h2></div><span class="weather-symbol" id="weatherIcon">☁</span></div><div id="weatherMain" class="weather-main">Chargement…</div><div class="weather-sub" id="weatherDescription">Prévisions à proximité du terrain</div><div class="weather-grid"><div><span>Pluie du jour</span><strong id="weatherRain">—</strong></div><div><span>Vent actuel</span><strong id="weatherWind">—</strong></div><div><span>Lever du soleil</span><strong id="weatherSunrise">—</strong></div><div><span>Coucher du soleil</span><strong id="weatherSunset">—</strong></div></div><div id="weatherUpdated" class="footnote">Données Open-Meteo · coordonnées approximatives de la propriété</div><button id="refreshWeather" class="subtle-button">↻ Actualiser la météo</button></section>
+    <section class="dash-card dashboard-summary"><div class="card-heading"><div><span class="eyebrow">RÉCOLTE EN COURS</span><h2>Indicateurs principaux</h2></div><span class="open-pill">CAMPAGNE</span></div>
+<div class="summary-grid primary-metrics"><div class="summary-metric"><span>Poids ramassé</span><strong id="homeKg">0 kg</strong></div><div class="summary-metric"><span>Kilos vendus</span><strong id="homeSold">—</strong></div><div class="summary-metric"><span>Chiffre d'affaires</span><strong id="homeRevenue">—</strong></div></div>
+<details class="extra-metrics"><summary>Voir tous les indicateurs <span aria-hidden="true">⌄</span></summary><div class="summary-grid secondary-metrics"><div class="summary-metric"><span>Secteurs traités</span><strong id="homeTreated">0 / 0</strong></div><div class="summary-metric"><span>Seaux</span><strong id="homeBuckets">0</strong></div><div class="summary-metric"><span>Sacs</span><strong id="homeBags">0</strong></div><div class="summary-metric"><span>Stock théorique *</span><strong id="homeStock">—</strong></div><div class="summary-metric"><span>CA encaissé</span><strong id="homePaid">—</strong></div></div><p class="footnote">* Stock théorique = kilos récoltés − kilos vendus. Une valeur négative est conservée pour faire apparaître les écarts de saisie.</p></details>
+<div class="dashboard-goals-head"><strong>◎ Objectifs de la saison</strong><button id="homeGoGoals" type="button" class="subtle-button">Ajuster ↗</button></div><div id="homeGoals" class="goal-mini"></div><div id="homeMilestones" class="milestone-row" aria-label="Paliers de récolte"></div><p id="homeProgressHelp" class="footnote">Créez vos secteurs sur place pour suivre la progression.</p><button class="subtle-button" id="homeGoStats">Voir les statistiques ↗</button></section>
+    <section class="dash-card quick-card"><div class="card-heading"><div><span class="eyebrow">ACCÈS RAPIDE</span><h2>Actions du jour</h2></div></div><div class="quick-actions"><button id="quickHarvest">＋ Saisir une récolte <span>→</span></button><button id="quickSale">＋ Enregistrer une vente <span>→</span></button><button id="quickCalibration">◈ Évaluer un secteur <span>→</span></button><button id="quickMap">▧ Ouvrir la carte <span>→</span></button></div><p class="footnote">Les données sont partagées avec les membres autorisés. Retrouvez les sauvegardes dans Paramètres.</p></section>
+  </div>
+</div>
+<main class="shell" id="appShell" hidden><div id="map" aria-label="Carte interactive des zones de récolte"></div><aside class="side"><div id="mapModules">
+<section class="card"><h2>Parcelle et récolte</h2><div class="stat"><div class="metric"><span class="small">Surface des secteurs</span><b id="area">0,00 ha</b></div><div class="metric"><span class="small">Récolte cumulée</span><b id="harvest">0 kg</b></div><div class="metric"><span class="small">Zones</span><b id="count">0</b></div><div class="metric"><span class="small">Saisies</span><b id="entries">0</b></div></div><p class="small">Superficie du levé topographique (2018) : <b>7,8415 ha</b> (78 415 m²), Artigo 762. Le périmètre exact n’est pas encore géoréférencé. La surface dessinée est indicative.</p></section>
+<section class="card"><h2>Limite de propriété <span class="pill">🔒 Protégée</span></h2><p>Le périmètre de travail est conservé. La carte sert à tracer et analyser vos secteurs, sans risque de modifier les limites par erreur.</p><div class="controls"><button id="modeBoundary" class="modebutton" hidden>◈ Modification propriété</button><button id="modeZone" class="modebutton active">▱ Dessiner les secteurs</button></div><p class="small" id="modeHint">Mode secteurs : dessinez vos zones de récolte à l’intérieur du périmètre.</p><div class="boundary-stat"><div class="small">Surface du contour de travail</div><b id="boundaryArea">Non tracé</b><p class="small" id="boundaryDelta">Référence topographique : 7,8415 ha.</p></div><div class="controls"><button id="fitBoundary">⌖ Voir la propriété</button></div><div id="boundaryEditTools" hidden><p class="notice">⚠ Mode maintenance actif : vous pouvez exceptionnellement rectifier le contour. Pensez à le reverrouiller.</p><div class="controls"><button id="editBoundary">✎ Ajuster le contour</button><button id="deleteBoundary" class="danger">✕ Effacer le contour</button><button id="relockBoundary">🔒 Reverrouiller</button></div></div></section>
+<section class="card map-drawing-card"><div class="sector-head"><div><span class="eyebrow">TRAVAIL SUR LA CARTE</span><h2>Dessiner les secteurs</h2></div><span class="pill">Max. 15</span></div>
+<p>Utilisez l'outil polygone sur la carte pour tracer une zone. Les outils de dessin permettent de modifier ou supprimer un secteur, sans toucher au périmètre protégé.</p>
+<div class="controls"><button id="locate">⌖ Me localiser</button><button id="village">↗ Revenir au terrain</button></div>
+<details class="map-base-options"><summary>Fond de carte</summary><div class="controls"><button id="satellite" class="primary">Satellite</button><button id="streets">Plan</button></div><p class="small">Le contour est une limite de travail indicative. Modification réservée à la maintenance administrateur dans Paramètres.</p></details></section>
+<section class="card sector-analytics" id="sectorAnalyticsPanel">
+ <div class="sector-head"><div><span class="eyebrow">CARTOGRAPHIE & PERFORMANCE</span><h2>Secteurs & rendements</h2></div><span class="pill" id="sectorCoverageBadge">0 / 15</span></div>
+ <details class="sector-overview"><summary><span>Organisation · <span id="sectorStatus">0 / 15 secteurs</span></span><span class="small">Détails</span></summary><div class="sector-overview-details"><p>Objectif initial : <b>10 secteurs</b>, maximum <b>15</b>. Les limites restent approximatives.</p><p id="geometryWarnings" class="notice">Vérifiez visuellement les chevauchements et espaces oubliés.</p></div></details>
+ <p>Les secteurs sont dessinés manuellement sur la carte. Les quantités et rendements sont calculés à partir des récoltes réellement enregistrées.</p>
+ <div class="sector-filters"><label>Campagne<select id="sectorYear"></select></label><label>Couleurs de la carte<select id="sectorColorMode"><option value="grade">Évaluation manuelle</option><option value="measured">Rendement mesuré (kg/ha)</option></select></label></div>
+ <div class="sector-kpis"><div><small>Surface sectorisée</small><strong id="sectorCoveredHa">0 ha</strong></div><div><small>Récolte attribuée</small><strong id="sectorTrackedKg">0 kg</strong></div><div><small>Récolte sans secteur</small><strong id="sectorUnassignedKg">0 kg</strong></div><div><small>Rendement global*</small><strong id="sectorGlobalYield">—</strong></div></div>
+ <p id="sectorCoverageNote" class="small">Aucun secteur dessiné. Conservez votre périmètre actuel et tracez les secteurs sur place.</p>
+ <div id="sectorLegend" class="sector-legend" hidden><span><i style="background:#236c38"></i> Élevé</span><span><i style="background:#87bf52"></i> Moyen</span><span><i style="background:#e89a40"></i> Faible</span><span><i style="background:#c7d0b5"></i> Sans récolte</span></div>
+ <div class="sector-shortcut"><label>Accès direct à un secteur<select id="sectorQuickSelect" aria-label="Choisir un secteur à afficher sur la carte"><option value="">Choisir un secteur…</option></select></label><button id="sectorQuickFocus" type="button" disabled>⌖ Voir sur la carte</button></div><div id="sectorRanking" class="sector-ranking"></div>
+ <p class="small">* Rendement indicatif = kilos attribués / somme des surfaces dessinées (kg/ha), non corrigé des passages multiples ni de la durée de campagne. Surfaces et limites approximatives.</p>
+ </section>
+<section class="card" id="selectedZoneCard"><h2>Zone sélectionnée</h2><p class="small" id="selectedHelp">Touchez une zone sur la carte pour la sélectionner.</p><div id="details" hidden><label>Nom de la zone<input id="name" maxlength="70" placeholder="Ex : Zone A1"></label><label>Catégorie de rendement / calibre<select id="grade"><option value="unknown">Non évaluée</option><option value="dark">Vert foncé · Excellent</option><option value="light">Vert clair · Bon</option><option value="orange">Orange · Moyen</option><option value="red">Rouge · Faible</option></select></label><div class="small" id="zoneArea"></div><div class="controls"><button class="primary" id="saveZone">Enregistrer zone</button></div></div></section>
+<section class="card calibration-entry"><div class="sector-head"><div><span class="eyebrow">ÉVALUATION TERRAIN</span><h2>Calibrage des secteurs</h2></div></div>
+<p>Notez le calibre et le rendement observés de 1 à 5. L'évaluation reste facultative.</p>
+<button type="button" id="toggleCalibration">Afficher le calibrage</button>
+<div id="calibrationModules" hidden>
+<div class="calibration-inner"><p class="small">Le classement combine calibre et rendement (50 % chacun). Les couleurs sont mises à jour sur la carte.</p><label>Secteur<select id="calZone"></select></label><div id="calEmpty" class="notice">Aucun secteur créé. Vous pourrez les dessiner directement sur place dans l'onglet Carte.</div><div id="calForm" hidden><label>Calibre observé (1 = très petit, 5 = très gros)<input type="range" id="calSize" min="1" max="5" step="1" value="3"></label><div class="range-label" id="calSizeLabel">3 / 5</div><label>Rendement observé (1 = très faible, 5 = très élevé)<input type="range" id="calYield" min="1" max="5" step="1" value="3"></label><div class="range-label" id="calYieldLabel">3 / 5</div><div class="cal-result"><span>Classement estimé</span><strong id="calResult">Moyen</strong></div><button id="saveCalibration" class="primary">Enregistrer l’évaluation</button><p class="small">Pour l'instant, il s'agit d'une appréciation manuelle. Un rendement mesuré en kg/ha remplacera cette note lorsque les données seront suffisantes.</p></div></div></div></section>
+</div><div id="harvestModules" hidden>
+<section class="card"><h2>🌰 Ramassage du jour</h2><div class="controls harvest-mode"><button id="quickMode" class="active" type="button">⚡ Rapide</button><button id="detailMode" type="button">☷ Détaillé</button></div><p class="small">Mode rapide pour enregistrer vos contenants en quelques gestes ; mode détaillé pour préciser la pesée et les observations.</p></section>
+<section class="card field-harvest-card" aria-label="Saisie rapide de récolte">
+<div class="field-harvest-heading"><div><span class="eyebrow">MODE TERRAIN</span><h2>🌰 Saisir une récolte</h2></div><span class="field-local-tag">Saisie locale protégée</span></div>
+<div class="field-topline"><label>Secteur<select id="entryZone"><option value="">Sans secteur (à classer plus tard)</option></select></label><label>Date de récolte<input type="date" id="entryDate"></label></div>
+<div class="field-counter-grid">
+ <div class="field-counter-tile"><div class="field-tile-header"><strong>Seaux</strong><span id="bucketWeightSummary">5 kg / seau</span></div><div class="counter"><button type="button" data-counter="buckets" data-change="-1" aria-label="Retirer un seau">−</button><input id="buckets" aria-label="Nombre de seaux" type="number" min="0" step="1" value="0"><button type="button" data-counter="buckets" data-change="1" aria-label="Ajouter un seau">+</button></div></div>
+ <div class="field-counter-tile"><div class="field-tile-header"><strong>Sacs</strong><span id="bagWeightSummary">20 kg / sac</span></div><div class="counter"><button type="button" data-counter="bags" data-change="-1" aria-label="Retirer un sac">−</button><input id="bags" aria-label="Nombre de sacs" type="number" min="0" step="1" value="0"><button type="button" data-counter="bags" data-change="1" aria-label="Ajouter un sac">+</button></div></div>
+</div>
+<div class="field-quantity-actions"><button type="button" id="fieldClearCounters" class="field-reset">Remettre à zéro</button></div>
+<div class="harvest-advanced" id="harvestAdvanced" hidden><label>Pesée réelle en kg (prioritaire)<input id="realkg" type="number" min="0" step="0.1" placeholder="Facultatif"></label>
+<label>Calibre observé (provisoire)<select id="entryCaliber"><option value="">Non évalué</option><option value="gros">Gros</option><option value="moyen">Moyen</option><option value="petit">Petit</option><option value="mixte">Mixte</option></select></label><label>Observations<input id="entryNotes" maxlength="250" placeholder="Ex. sol humide, châtaignes petites..."></label></div>
+<div class="metric field-estimate"><span class="small">Total estimé pour cette saisie</span><b id="entryEstimate" aria-live="polite">0 kg</b></div>
+<button class="primary field-save" id="addEntry">✓ Enregistrer cette récolte</button>
+<details class="field-settings"><summary>⚙ Réglages des contenants et informations complémentaires</summary><div class="field-settings-inner"><div class="row"><label>Poids par seau, kg<input id="bucketkg" type="number" min="0" step="0.1" value="5"></label><label>Poids par sac, kg<input id="bagkg" type="number" min="0" step="0.1" value="20"></label></div><label>Ramasseur / équipe<input id="entryPerson" maxlength="60" placeholder="Facultatif"></label><p class="small">Ces valeurs s'appliquent à cette saisie et n'altèrent pas les récoltes déjà enregistrées.</p></div></details>
+
+<p class="small field-footer-note">En mode détaillé, la pesée réelle remplace l'estimation. Les récoltes restent enregistrées localement et synchronisées selon votre configuration.</p>
+</section>
+<section class="card"><h2>Derniers ramassages</h2><div id="entryList"></div></section>
+</div><div id="businessModules" hidden>
+<section class="card"><h2>▣ Business · Ventes de châtaignes</h2><p>Les ventes sont enregistrées séparément dans Supabase et partagées entre les comptes autorisés. Les montants sont en euros ; aucune vente fictive n’est créée.</p><div class="sync-status" id="businessStatus">Connectez-vous à votre propriété familiale et installez la migration SQL Business V0.5.0.</div>
+<div class="stat"><div class="metric"><span class="small">Chiffre d’affaires</span><b id="bizRevenue">0,00 €</b></div><div class="metric"><span class="small">Quantité vendue</span><b id="bizSold">0 kg</b></div><div class="metric"><span class="small">Encaissé</span><b id="bizPaid">0,00 €</b></div><div class="metric"><span class="small">Prix moyen/kg</span><b id="bizAverage">—</b></div></div></section>
+<section class="card"><h2>Nouvelle vente</h2><div class="controls"><button type="button" class="modebutton active" id="saleQuick">⚡ Rapide</button><button type="button" class="modebutton" id="saleDetailed">☷ Fiche détaillée</button></div><form id="saleForm"><input type="hidden" id="saleEditId"><label>Client / Acheteur <input id="saleBuyer" maxlength="140" required placeholder="Ex. Coopérative, client particulier"></label><div class="row"><label>Date de vente <input id="saleDate" type="date" required></label><label>Quantité vendue (kg) <input id="saleKg" type="number" min="0.001" step="0.001" inputmode="decimal" required></label></div><div class="row"><label>Prix au kilo (€) <input id="salePrice" type="number" min="0" step="0.01" inputmode="decimal" required></label><label>Statut du paiement <select id="saleStatus"><option value="paid">Payé</option><option value="pending">En attente</option></select></label></div><div class="metric"><span class="small">Montant calculé</span><b id="saleTotal">0,00 €</b></div><div id="saleExtra" hidden><label>Moyen de paiement <select id="salePayment"><option value="">Non précisé</option><option value="cash">Espèces</option><option value="transfer">Virement</option><option value="card">Carte</option><option value="other">Autre</option></select></label><label>Calibre <select id="saleCaliber"><option value="">Non précisé</option><option value="gros">Gros</option><option value="moyen">Moyen</option><option value="petit">Petit</option><option value="mixte">Mixte</option></select></label><label>Observations <textarea id="saleNotes" maxlength="1000" rows="3" placeholder="Référence du bon, précisions..."></textarea></label><label>Photo / PDF du récépissé (facultatif, max. 8 Mo) <input type="file" id="saleReceipt" accept="image/jpeg,image/png,image/webp,application/pdf"></label><p class="small">Le fichier sera stocké dans un espace privé Supabase, distinct de la sauvegarde JSON. Lors d’une modification, un nouveau fichier remplace le lien du précédent sans effacer automatiquement l'ancien objet.</p></div><div class="controls"><button type="submit" class="primary" id="saveSale">Enregistrer la vente</button><button type="button" id="cancelSale" hidden>Annuler la modification</button></div></form></section>
+<section class="card"><h2>Registre des ventes</h2><div class="controls"><button id="refreshSales" type="button">↻ Actualiser</button><button id="exportSales" type="button">↓ Export CSV ventes</button></div><div id="salesList"><p class="small">Aucune vente chargée.</p></div><p class="small">Le récépissé téléchargeable est un relevé de vente, pas une facture réglementaire automatique.</p></section><details id="businessGoalsPanel" class="business-goals"><summary>◎ Objectifs de campagne · ajuster les cibles</summary><div id="goalsModules"><section class="card"><h2>◎ Objectifs de la campagne</h2><p>Définissez les cibles en kg et en euros. Les jauges se mettent à jour avec les récoltes et ventes partagées.</p><div class="sync-status" id="goalsStatus">Chargement des objectifs…</div><label>Campagne <input id="goalYear" type="number" min="2020" max="2100" step="1"></label><div id="goalProgress"></div><div id="goalEditor"><label>Objectif de récolte (kg)<input id="goalHarvest" type="number" min="0" step="1"></label><label>Objectif de chiffre d’affaires (€)<input id="goalRevenue" type="number" min="0" step="1"></label><label>Objectif de kilos vendus (kg)<input id="goalSold" type="number" min="0" step="1"></label><button class="primary" id="saveGoals" type="button">Enregistrer les objectifs</button></div><p class="small">Les objectifs sont modifiables uniquement par les administrateurs. Les valeurs à zéro désactivent la jauge correspondante.</p></section></div>
+<section class="card simulation-card"><h2>Simuler un objectif</h2><p>Faites glisser le curseur pour prévisualiser votre progression. La simulation ne modifie <b>jamais</b> les objectifs enregistrés.</p><label for="goalSimulation">Objectif simulé de récolte : <strong id="goalSimTarget">—</strong></label><input id="goalSimulation" type="range" min="100" max="10000" step="100" value="2500"><div class="goal-track"><div class="goal-fill" id="goalSimulationFill" style="width:0%"></div></div><p id="goalSimInfo" class="small">—</p><button type="button" id="goalResetSimulation">Revenir à l’objectif enregistré</button></section></details></div><div id="statsModules" hidden><section class="card" id="analyticsPanel" aria-labelledby="analyticsTitle">
+<div class="analytics-head"><div><p class="small" style="letter-spacing:.14em;color:#a8c68f;margin:0">CASTANEA ANALYTICS</p><h2 id="analyticsTitle">Statistiques de la saison</h2><p class="small">Récoltes, ventes et secteurs · données de la propriété familiale</p></div></div>
+<div class="analytics-view-switch" role="group" aria-label="Catégorie de statistiques"><button type="button" data-analytics-view="all" aria-pressed="true">Vue complète</button><button type="button" data-analytics-view="harvest" aria-pressed="false">Récoltes</button><button type="button" data-analytics-view="business" aria-pressed="false">Business</button></div>
+<div class="analytics-filters"><label for="analyticsYear">Campagne<select id="analyticsYear"></select></label><label for="analyticsPeriod">Regroupement<select id="analyticsPeriod"><option value="day">Par jour</option><option value="week">Par semaine</option><option value="month" selected>Par mois</option></select></label><label for="analyticsZone">Secteur de récolte<select id="analyticsZone"><option value="all">Tous les secteurs</option></select></label></div>
+<div class="analytics-kpis"><div class="analytics-kpi"><span>Récolté</span><strong id="analyticsHarvestKpi">—</strong></div><div class="analytics-kpi"><span>Vendu</span><strong id="analyticsSoldKpi">—</strong></div><div class="analytics-kpi"><span>Chiffre d'affaires</span><strong id="analyticsRevenueKpi">—</strong></div><div class="analytics-kpi"><span>Stock théorique *</span><strong id="analyticsStockKpi">—</strong></div></div>
+<div class="analytics-cards"><div class="analytics-card" data-analytics-category="harvest"><h3>Évolution des récoltes</h3><p>Poids récolté sur la période sélectionnée.</p><div class="analytics-chart" id="analyticsHarvestChart"></div></div><div class="analytics-card" data-analytics-category="business"><h3>Évolution du chiffre d'affaires</h3><p>Montants de vente enregistrés par période.</p><div class="analytics-chart" id="analyticsRevenueChart"></div></div><div class="analytics-card" data-analytics-category="harvest"><h3>Récolte par secteur</h3><p>Comparaison des secteurs (kg récoltés).</p><div class="analytics-chart" id="analyticsSectorChart"></div></div><div class="analytics-card" data-analytics-category="business"><h3>Ventes par acheteur</h3><p>Répartition du chiffre d'affaires par client.</p><div class="analytics-chart" id="analyticsBuyerChart"></div></div></div>
+<p class="analytics-note">* Stock théorique = kilos récoltés − kilos vendus, sans déduction des pertes ou dons. Il peut être négatif. Le filtre secteur concerne uniquement les récoltes : les ventes ne sont pas reliées à un secteur.</p>
+</section><details class="card analytics-detail"><summary>Bilans détaillés · jours, seaux, sacs et historiques</summary><h2>📊 Bilan de la récolte</h2><div class="stat"><div class="metric"><span class="small">Quantité totale</span><b id="statTotal">0 kg</b></div><div class="metric"><span class="small">Jours de ramassage</span><b id="statDays">0</b></div><div class="metric"><span class="small">Seaux</span><b id="statBuckets">0</b></div><div class="metric"><span class="small">Sacs</span><b id="statBags">0</b></div></div><p class="small" id="statAreaYield"></p><h2>Indicateurs commerciaux</h2><div class="stat"><div class="metric"><span class="small">CA des ventes</span><b id="statRevenue">—</b></div><div class="metric"><span class="small">Kilos vendus</span><b id="statSold">—</b></div><div class="metric"><span class="small">Encaissements</span><b id="statPaid">—</b></div><div class="metric"><span class="small">Stock théorique *</span><b id="statStock">—</b></div></div><p class="small">* Stock théorique = récolté − vendu. Pertes, dons et consommation familiale non déduits ; si le stock est négatif, les historiques doivent être rapprochés.</p><h2>Récolte par date</h2><div id="byDate"></div><h2>Récolte par secteur</h2><div id="byZone"></div><p class="small">Les rendements par hectare des secteurs seront disponibles lorsque les zones auront été dessinées sur place.</p></details><section class="card"><h2>Export des récoltes</h2><button id="exportCsv">↓ Export CSV pour Excel</button><p class="small">Le CSV reprend chaque saisie et facilite vos calculs sur tableur.</p></section></div>
+<div id="settingsModules" hidden><section class="card"><h2>⚙ Paramètres CASTANEA</h2><p>Gérez les accès familiaux, la synchronisation et les sauvegardes depuis un seul endroit.</p><details id="boundaryMaintenance" class="boundary-maintenance"><summary>🔒 Maintenance du périmètre (administrateur)</summary><p class="small">Le contour est protégé par défaut. Déverrouillez-le uniquement pour une rectification exceptionnelle. Effectuez d’abord un Export JSON. Les secteurs ne sont pas affectés par ce verrouillage.</p><p id="boundaryLockStatus" class="small">Périmètre verrouillé.</p><button type="button" id="unlockBoundary" class="danger">Déverrouiller la modification du périmètre</button><button type="button" id="lockBoundary" hidden>🔒 Reverrouiller le périmètre</button></details><div class="settings-links"><button type="button" id="settingsFamilyJump">♧ Famille & accès</button><button type="button" id="settingsCloudJump">☁ Synchronisation</button><button type="button" id="settingsBackupJump">↓ Sauvegardes</button></div></section><div id="familyModules">
+<section class="card"><h2>♧ CASTANEA Famille</h2><p>Une propriété, plusieurs comptes personnels. Les invitations sont privées et expirent après 48 h. Chaque membre doit créer son propre compte Supabase.</p>
+<div id="familyState" class="sync-status">Chargement de l’espace familial…</div>
+<div id="familyInit"><p>Administrateur : créez l’espace familial à partir de votre sauvegarde cloud personnelle. Les anciennes données resteront intactes.</p><button type="button" id="familyBootstrap" class="primary">Créer la propriété familiale depuis mon cloud</button></div>
+<div id="familyJoin"><label>Code d’invitation reçu<input id="familyInviteCode" type="text" placeholder="Code UUID privé" autocomplete="off"></label><button type="button" id="familyRedeem">Rejoindre la propriété</button></div>
+<div id="familyActive" hidden><p class="small" id="familyRole"></p><h2>Membres autorisés</h2><div id="familyMembers"></div><div id="familyAdmin" hidden><label>Rôle du nouvel invité<select id="familyInviteRole"><option value="contributor">Contributeur — ses récoltes</option><option value="viewer">Lecteur — consultation uniquement</option><option value="admin">Administrateur — accès complet</option></select></label><button type="button" id="familyCreateInvite">Créer une invitation à usage unique</button><p id="familyInviteOutput" class="small" role="status"></p><button type="button" id="familyCopyInvite" hidden>Copier le code d’invitation</button></div></div>
+<p class="small warn">Avant la migration ou une invitation : sauvegardez vos données avec « Export JSON ». L’espace familial ne doit être créé que depuis le compte propriétaire de la sauvegarde cloud.</p></section></div>
+
+<section class="card" id="cloudPanel"><h2>☁ Synchronisation entre appareils</h2>
+<p>Option cloud privée via Supabase. Le périmètre, les secteurs et les récoltes peuvent être partagés entre appareils connectés à la <b>même propriété partagée</b> (ou au même compte en mode personnel). Sans configuration, tout fonctionne en local.</p>
+<div id="cloudState" class="sync-status" role="status">Stockage local · Synchronisation non configurée</div>
+<p id="cloudDiagnostic" class="small" role="status">Diagnostic de connexion : en attente.</p><button id="cloudTest" type="button">↻ Diagnostiquer la connexion</button>
+<details id="cloudConfig"><summary>Configurer mon espace cloud</summary>
+<label>Adresse du projet Supabase (HTTPS)<input id="sbUrl" type="url" placeholder="https://xxxxx.supabase.co" autocomplete="off"></label>
+<label>Clé publique « anon » / « publishable » (jamais service_role)<input id="sbKey" type="text" autocomplete="off" placeholder="sb_publishable_... ou eyJ..."></label>
+<div class="controls"><button id="saveSbConfig" type="button">Enregistrer la configuration</button><button id="clearSbConfig" type="button">Désactiver sur cet appareil</button></div>
+<p class="small">Créez d'abord les tables et règles de sécurité avec le fichier <code>SUPABASE_SETUP.sql</code> fourni. Ne placez jamais une clé secrète dans le site.</p>
+</details>
+<div id="cloudLogin">
+<label>Email de connexion<input id="cloudEmail" type="email" autocomplete="email" placeholder="vous@exemple.com"></label>
+<label>Mot de passe<input id="cloudPassword" type="password" autocomplete="current-password" minlength="8" placeholder="Votre mot de passe Supabase"></label>
+<div class="controls"><button id="cloudPasswordLogin" type="button" class="primary">Se connecter</button><button id="cloudPasswordSignup" type="button">Créer un compte</button></div>
+<p class="small">Si votre compte a été créé précédemment par lien magique, il n'a pas forcément de mot de passe. Utilisez « Mot de passe oublié » ou créez un autre compte avec une adresse différente. Chaque compte reste privé tant qu’il n’a pas accepté une invitation familiale.</p>
+<button id="cloudPasswordReset" type="button">Mot de passe oublié ?</button>
+<p class="small">La réinitialisation exige un e-mail et peut nécessiter une redirection. Si les liens Safari restent bloqués, l'administrateur du projet peut créer un nouvel utilisateur avec mot de passe dans Supabase → Authentication → Users → Add user. N'utilisez jamais votre mot de passe Supabase du tableau de bord comme clé API.</p>
+</div>
+<div id="cloudLogged" hidden><p class="small" id="cloudIdentity"></p><div class="sync-actions"><button id="uploadCloud" type="button">↑ Envoyer les données locales</button><button id="downloadCloud" type="button">↓ Récupérer les données cloud</button><button id="cloudRefresh" type="button">↻ Vérifier</button></div>
+<label class="layercheck"><input type="checkbox" id="autoCloud"> Synchronisation automatique (après premier transfert)</label>
+<div class="controls" id="conflictTools"><button id="conflictLocal" type="button">↓ Sauvegarde locale du conflit</button><button id="conflictRemote" type="button">↓ Copie cloud du conflit</button></div><button id="cloudLogout" type="button">Se déconnecter</button></div>
+<p class="small sync-note">Important : exportez votre JSON depuis l'iPad <b>avant</b> le premier transfert. L'envoi remplace la copie cloud ; la récupération remplace les données locales après confirmation. En cas de conflit, l'application bloque l'envoi et demande une intervention.</p></section>
+<section class="card"><h2>Sauvegarde & export</h2><p>Les données sont conservées sur cet appareil dans ce navigateur. Exportez régulièrement une copie JSON pour les conserver et les transférer.</p><div class="controls"><button id="export">↓ Export JSON</button><button id="import">↑ Import JSON</button><input type="file" id="file" accept="application/json,.json" hidden></div><p class="small">Conservez une sauvegarde JSON, même après activation du cloud.</p></section>
+</div></aside></main><div id="toast" class="toast" role="status"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script><script>
+(()=>{'use strict';const KEY='castanea-v01',center=[41.0699805,-7.5309673],colors={unknown:'#c7d0b5',dark:'#236c38',light:'#87bf52',orange:'#e89a40',red:'#ce5546'};let localDirty=false, cloudClient=null, cloudUser=null, cloudVersion=null, cloudTimer=null, cloudBusy=false, autoTimer=null, cloudConfigured=false;let data={version:2,boundary:null,zones:[],entries:[]},selected=null,mode='zone',boundaryLayer=null,boundaryUnlocked=false;let sectorColorMode='grade',sectorYearValue=String(new Date().getFullYear());const $=id=>document.getElementById(id),map=L.map('map',{zoomControl:true}).setView(center,17);const streetLayer=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'});const satelliteLayer=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery © Esri and imagery providers'}).addTo(map);function basemap(type){if(type==='satellite'){map.removeLayer(streetLayer);satelliteLayer.addTo(map)}else{map.removeLayer(satelliteLayer);streetLayer.addTo(map)}$('satellite').classList.toggle('primary',type==='satellite');$('streets').classList.toggle('primary',type==='streets')} $('satellite').onclick=()=>basemap('satellite');$('streets').onclick=()=>basemap('streets');let layers=L.featureGroup().addTo(map);const draw=new L.Control.Draw({position:'topleft',draw:{polygon:{allowIntersection:false,showArea:true,shapeOptions:{color:'#f7dc91'}},rectangle:false,polyline:false,circle:false,circlemarker:false,marker:false},edit:{featureGroup:layers}});map.addControl(draw);
+const boundaryGroup=L.featureGroup().addTo(map);
+function updateBoundaryLockUI(){
+ $('modeBoundary').hidden=!boundaryUnlocked;
+ $('boundaryEditTools').hidden=!boundaryUnlocked;
+ $('unlockBoundary').hidden=boundaryUnlocked;
+ $('lockBoundary').hidden=!boundaryUnlocked;
+ $('boundaryLockStatus').textContent=boundaryUnlocked?'⚠ Périmètre temporairement déverrouillé sur cet appareil.':'🔒 Périmètre verrouillé. Les secteurs restent modifiables.';
+}
+function lockBoundary(){
+ if(boundaryLayer?.editing?.enabled())boundaryLayer.editing.disable();
+ boundaryUnlocked=false;chooseMode('zone');updateBoundaryLockUI();
+ $('editBoundary').textContent='✎ Ajuster le contour';
+}
+function chooseMode(next){
+ if(next==='boundary'&&!boundaryUnlocked){toast('Périmètre verrouillé : Paramètres → Maintenance du périmètre.');return;}
+ mode=next;$('modeBoundary').classList.toggle('active',mode==='boundary');$('modeZone').classList.toggle('active',mode==='zone');
+ $('modeHint').textContent=mode==='boundary'?'Maintenance du périmètre : ajustez le contour avec précaution.':'Mode secteurs : dessinez des zones de récolte sans modifier la propriété.';
+ draw.setDrawingOptions({polygon:{allowIntersection:false,showArea:true,shapeOptions:{color:mode==='boundary'?'#f7dc91':'#a9de91'}}});
+}
+$('unlockBoundary').onclick=()=>{
+ if(!canEditMap()||familyId&&familyRole!=='admin'){toast('Réservé aux administrateurs de la propriété.');return;}
+ if(!confirm('Vous allez autoriser la modification du périmètre. Avez-vous effectué un Export JSON ?'))return;
+ if(prompt('Pour confirmer, tapez exactement DEVERROUILLER :')!=='DEVERROUILLER'){toast('Confirmation incorrecte : le périmètre reste verrouillé.');return;}
+ boundaryUnlocked=true;updateBoundaryLockUI();switchTab('Map');chooseMode('boundary');toast('Maintenance du contour temporairement activée.');
+};
+$('lockBoundary').onclick=lockBoundary;$('relockBoundary').onclick=lockBoundary;
+$('modeBoundary').onclick=()=>chooseMode('boundary');$('modeZone').onclick=()=>chooseMode('zone');updateBoundaryLockUI();
+function renderBoundary(){boundaryGroup.clearLayers();boundaryLayer=null;if(data.boundary&&data.boundary.length>=3){boundaryLayer=L.polygon(data.boundary,{color:'#f8e29a',weight:4,fill:false,dashArray:'9,6'}).addTo(boundaryGroup);boundaryLayer.bindTooltip('Périmètre de propriété (provisoire)');let ha=area(data.boundary);$('boundaryArea').textContent=ha.toLocaleString('fr-FR',{minimumFractionDigits:3,maximumFractionDigits:4})+' ha';let delta=ha-7.8415;$('boundaryDelta').textContent='Écart avec le relevé : '+(delta>=0?'+':'')+(delta*10000).toLocaleString('fr-FR',{maximumFractionDigits:0})+' m² ('+(delta>=0?'+':'')+(delta/7.8415*100).toLocaleString('fr-FR',{maximumFractionDigits:1})+' %). Une surface concordante ne garantit pas une limite exacte.';}else{$('boundaryArea').textContent='Non tracé';$('boundaryDelta').textContent='Référence topographique : 7,8415 ha.';}}
+$('fitBoundary').onclick=()=>{if(boundaryLayer)map.fitBounds(boundaryLayer.getBounds().pad(.15));else map.setView(center,17)};
+$('deleteBoundary').onclick=()=>{if(!boundaryUnlocked||!guardWrite(true))return;if(!data.boundary)return;if(confirm('ATTENTION : effacer le périmètre de travail ? Les zones et récoltes restent, mais le contour devra être redessiné.')&&prompt('Tapez EFFACER pour confirmer :')==='EFFACER'){data.boundary=null;save();renderBoundary();lockBoundary();toast('Contour effacé')}};
+$('editBoundary').onclick=()=>{if(!boundaryUnlocked||!guardWrite(true))return;if(!boundaryLayer){toast('Dessinez d’abord le contour.');return;}if(boundaryLayer.editing.enabled()){boundaryLayer.editing.disable();data.boundary=boundaryLayer.getLatLngs()[0].map(p=>[p.lat,p.lng]);save();renderBoundary();lockBoundary();toast('Périmètre mis à jour et reverrouillé');}else{boundaryLayer.editing.enable();$('editBoundary').textContent='✓ Enregistrer les limites';toast('Déplacez les sommets jaunes, puis enregistrez.')}};
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',3400)}function save(){localDirty=true;try{localStorage.setItem(KEY,JSON.stringify(data));localStorage.setItem('castanea-cloud-dirty','true')}catch(e){toast('Sauvegarde locale impossible : exportez vos données.')}updateCloudStatus();scheduleAutoCloud()}function uid(){return crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()}function area(coords){let lat=coords.map(x=>x[0]*Math.PI/180),lon=coords.map(x=>x[1]*Math.PI/180),s=0,R=6378137;for(let i=0;i<coords.length;i++){let j=(i+1)%coords.length;s+=(lon[j]-lon[i])*(2+Math.sin(lat[i])+Math.sin(lat[j]))}return Math.abs(s*R*R/2)/10000}function getLayer(id){let match;layers.eachLayer(l=>{if(l.zoneId===id)match=l});return match}function makeLayer(z){let l=L.polygon(z.points,{color:sectorDisplayColor(z),fillOpacity:.30,weight:3});l.zoneId=z.id;l.addTo(layers);l.on('click',()=>{select(z.id);showSectorPopup(z.id)});l.bindTooltip(z.name);return l}
+function select(id){selected=id;let z=data.zones.find(x=>x.id===id);$('details').hidden=!z;$('selectedHelp').textContent=z?'Modifiez les propriétés de cette zone.':'Touchez une zone sur la carte.';if(z){$('name').value=z.name;$('grade').value=z.grade;$('zoneArea').textContent='Superficie approximative : '+area(z.points).toFixed(3).replace('.',',')+' ha';}const quick=$('sectorQuickSelect');if(quick)quick.value=z?String(z.id):'';const focus=$('sectorQuickFocus');if(focus)focus.disabled=!z;renderStats()}
+function showSectorPopup(id){const z=data.zones.find(z=>String(z.id)===String(id)),layer=getLayer(id);if(!z||!layer)return;const kg=sectorMetrics().totals.get(String(z.id))||0,ha=area(z.points),format=(n,d=1)=>n.toLocaleString('fr-FR',{maximumFractionDigits:d});const root=document.createElement('div');root.className='sector-map-popup';const title=document.createElement('strong');title.textContent=z.name;const summary=document.createElement('div');summary.className='zone-figures';summary.textContent=format(ha,3)+' ha · '+format(kg)+' kg récoltés'+(ha>0?' · '+format(kg/ha)+' kg/ha':'');const action=document.createElement('button');action.type='button';action.textContent='Modifier la fiche';action.onclick=()=>{select(z.id);layer.closePopup();const target=$('selectedZoneCard');if(target)target.scrollIntoView({behavior:'smooth',block:'start'})};root.append(title,summary,action);layer.bindPopup(root,{maxWidth:300}).openPopup()}
+function focusSector(id){const z=data.zones.find(z=>String(z.id)===String(id));if(!z)return;select(z.id);const l=getLayer(z.id);if(!l)return;switchTab('Map');setTimeout(()=>{map.invalidateSize();map.fitBounds(l.getBounds().pad(.45),{maxZoom:19});showSectorPopup(z.id)},120)}
+$('sectorQuickSelect').addEventListener('change',e=>{const id=e.target.value;$('sectorQuickFocus').disabled=!id;if(id)select(id)});
+$('sectorQuickFocus').addEventListener('click',()=>{const id=$('sectorQuickSelect').value;if(id)focusSector(id)});
+function pointInPoly(p,poly){let inside=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){let a=poly[i],b=poly[j];if(((a[0]>p[0])!==(b[0]>p[0]))&&(p[1]<(b[1]-a[1])*(p[0]-a[0])/(b[0]-a[0])+a[1]))inside=!inside}return inside}
+function orient(a,b,c){return (b[1]-a[1])*(c[0]-a[0])-(b[0]-a[0])*(c[1]-a[1])}
+function segmentsCross(a,b,c,d){const x=orient(a,b,c),y=orient(a,b,d),u=orient(c,d,a),v=orient(c,d,b);return x*y < -1e-17 && u*v < -1e-17}
+function polygonsIntersect(a,b){if(a.some(p=>pointInPoly(p,b))||b.some(p=>pointInPoly(p,a)))return true;for(let i=0;i<a.length;i++)for(let j=0;j<b.length;j++)if(segmentsCross(a[i],a[(i+1)%a.length],b[j],b[(j+1)%b.length]))return true;return false}
+
+function seasonSectorEntries(){return data.entries.filter(e=>String(e.date||'').startsWith(sectorYearValue))}
+function sectorMetrics(){
+ const items=seasonSectorEntries(), totals=new Map(data.zones.map(z=>[String(z.id),0]));let unassigned=0;
+ items.forEach(e=>{const k=String(e.zoneId||''),kg=Number(e.kg)||0;if(totals.has(k))totals.set(k,totals.get(k)+kg);else unassigned+=kg});
+ return {totals,unassigned};
+}
+function sectorDisplayColor(z){
+ if(sectorColorMode!=='measured')return colors[z.grade]||colors.unknown;
+ const {totals}=sectorMetrics();const kg=totals.get(String(z.id))||0;if(kg<=0)return colors.unknown;
+ const ha=area(z.points),rates=data.zones.map(v=>(totals.get(String(v.id))||0)/Math.max(.000001,area(v.points))).filter(r=>r>0);
+ const max=Math.max(...rates,0),ratio=max?kg/Math.max(.000001,ha)/max:0;
+ return ratio>=.67?colors.dark:ratio>=.34?colors.light:colors.orange;
+}
+function applySectorColors(){layers.eachLayer(layer=>{let z=data.zones.find(z=>String(z.id)===String(layer.zoneId));if(z)layer.setStyle({color:sectorDisplayColor(z)})});if(typeof refreshPreview==='function')refreshPreview()}
+function renderSectorAnalytics(){
+ const ysel=$('sectorYear');if(!ysel)return;
+ const years=new Set([new Date().getFullYear()]);for(const e of data.entries){let y=Number(String(e.date||'').slice(0,4));if(y>=2020&&y<=2100)years.add(y)}
+ const wanted=sectorYearValue;ysel.replaceChildren();[...years].sort((a,b)=>b-a).forEach(y=>{const o=document.createElement('option');o.value=String(y);o.textContent=String(y);ysel.append(o)});sectorYearValue=[...years].some(y=>String(y)===wanted)?wanted:String(Math.max(...years));ysel.value=sectorYearValue;
+ $('sectorColorMode').value=sectorColorMode;$('sectorLegend').hidden=sectorColorMode!=='measured';
+ const m=sectorMetrics(),totalHa=data.zones.reduce((v,z)=>v+area(z.points),0),assigned=[...m.totals.values()].reduce((a,b)=>a+b,0);
+ const fmt=(v,dec=1)=>v.toLocaleString('fr-FR',{maximumFractionDigits:dec});
+ $('sectorCoverageBadge').textContent=data.zones.length+' / 15';$('sectorCoveredHa').textContent=fmt(totalHa,3)+' ha';$('sectorTrackedKg').textContent=fmt(assigned)+' kg';$('sectorUnassignedKg').textContent=fmt(m.unassigned)+' kg';$('sectorGlobalYield').textContent=totalHa>0?fmt(assigned/totalHa)+' kg/ha':'—';
+ const boundaryHa=data.boundary?.length>=3?area(data.boundary):0;
+ $('sectorCoverageNote').textContent=data.zones.length===0?'Aucun secteur dessiné. Vous pouvez créer vos secteurs manuellement sur place.':(boundaryHa?'Somme des surfaces : '+fmt(100*totalHa/boundaryHa)+' % du périmètre opérationnel (indicatif, chevauchements possibles).':'Dessinez également le périmètre pour comparer les superficies.');
+ const shortcut=$('sectorQuickSelect');const previous=shortcut.value||String(selected||'');shortcut.replaceChildren();const blank=document.createElement('option');blank.value='';blank.textContent='Choisir un secteur…';shortcut.append(blank);data.zones.forEach(z=>{const o=document.createElement('option');o.value=String(z.id);o.textContent=z.name;shortcut.append(o)});shortcut.value=data.zones.some(z=>String(z.id)===previous)?previous:'';$('sectorQuickFocus').disabled=!shortcut.value;
+ const root=$('sectorRanking');root.replaceChildren();if(!data.zones.length){const e=document.createElement('div');e.className='sector-empty';e.textContent='Aucun secteur créé. Passez en mode « Zones de récolte », puis dessinez vos secteurs sur la carte.';root.append(e);return}
+ const rows=data.zones.map(z=>({zone:z,kg:m.totals.get(String(z.id))||0,ha:area(z.points)})).sort((a,b)=>b.kg-a.kg),max=Math.max(...rows.map(r=>r.kg),1);
+ rows.forEach((r,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='sector-line'+(String(selected)===String(r.zone.id)?' is-selected':'');const head=document.createElement('div');head.className='sector-line-head';const name=document.createElement('strong');name.textContent=(i+1)+'. '+r.zone.name;const val=document.createElement('b');val.textContent=fmt(r.kg)+' kg';head.append(name,val);
+ const desc=document.createElement('div');desc.className='sector-line-sub';desc.textContent=fmt(r.ha,3)+' ha · '+(r.kg>0&&r.ha>0?fmt(r.kg/r.ha)+' kg/ha':'Aucune récolte attribuée');const bar=document.createElement('div');bar.className='sector-bar';const fill=document.createElement('span');fill.style.width=(100*r.kg/max)+'%';fill.style.background=sectorDisplayColor(r.zone);bar.append(fill);btn.append(head,desc,bar);
+ btn.onclick=()=>focusSector(r.zone.id);root.append(btn)});
+}
+$('sectorYear').addEventListener('change',e=>{sectorYearValue=e.target.value;renderSectorAnalytics();applySectorColors()});
+$('sectorColorMode').addEventListener('change',e=>{sectorColorMode=e.target.value;renderSectorAnalytics();applySectorColors()});
+function renderStats(){refreshCommerce();
+$('sectorStatus').textContent=data.zones.length+' / 15 secteurs · objectif initial : 10';
+const alerts=[];
+if(data.zones.length>15)alerts.push('Le nombre maximal conseillé de 15 secteurs est dépassé.');
+if(data.boundary&&data.boundary.length>=3){
+const perimeter=L.polygon(data.boundary);
+data.zones.forEach(z=>{if(z.points.some(pt=>!pointInPoly(pt,data.boundary)))alerts.push(z.name+' : au moins un sommet est hors propriété.')});
+}
+for(let i=0;i<data.zones.length;i++)for(let j=i+1;j<data.zones.length;j++){
+if(polygonsIntersect(data.zones[i].points,data.zones[j].points))alerts.push(data.zones[i].name+' et '+data.zones[j].name+' : chevauchement possible.');
+}
+$('geometryWarnings').textContent=alerts.length?alerts.join(' '):data.zones.length?'Aucun chevauchement détecté. Vérifiez les espaces vides et les limites visuellement (contrôle indicatif).':'Aucun secteur à contrôler pour le moment.';renderSectorAnalytics();applySectorColors();
+let ha=data.zones.reduce((s,z)=>s+area(z.points),0),kg=data.entries.reduce((s,e)=>s+e.kg,0);$('area').textContent=ha.toFixed(2).replace('.',',')+' ha';$('harvest').textContent=kg.toLocaleString('fr-FR',{maximumFractionDigits:1})+' kg';$('count').textContent=data.zones.length;$('entries').textContent=data.entries.length;renderHarvestStats();}
+function refresh(fit=false){renderBoundary();layers.clearLayers();data.zones.forEach(makeLayer);if(fit&&data.boundary)map.fitBounds(boundaryLayer.getBounds().pad(.15));else if(fit&&data.zones.length)map.fitBounds(layers.getBounds().pad(.15));select(data.zones.some(z=>z.id===selected)?selected:null);renderStats()}
+map.on(L.Draw.Event.CREATED,e=>{if(e.layerType!=='polygon'||!guardWrite(true))return;let pts=e.layer.getLatLngs()[0].map(p=>[p.lat,p.lng]);if(mode==='boundary'){if(!boundaryUnlocked){toast('Périmètre verrouillé');return;}if(data.boundary&&!confirm('Remplacer le contour existant ?'))return;data.boundary=pts;save();renderBoundary();lockBoundary();toast('Périmètre enregistré et reverrouillé');return;}if(data.zones.length>=15){toast('Maximum de 15 secteurs atteint.');return}let z={id:uid(),name:'Zone '+(data.zones.length+1),grade:'unknown',points:pts};data.zones.push(z);save();refresh();select(z.id);toast('Zone créée : donnez-lui un nom.')} );map.on(L.Draw.Event.EDITED,e=>{if(!guardWrite(true)){refresh(true);return}e.layers.eachLayer(l=>{let z=data.zones.find(z=>z.id===l.zoneId);if(z)z.points=l.getLatLngs()[0].map(p=>[p.lat,p.lng])});save();refresh();toast('Contours mis à jour')});map.on(L.Draw.Event.DELETED,e=>{if(!guardWrite(true)){refresh(true);return}let ids=[];e.layers.eachLayer(l=>ids.push(l.zoneId));data.zones=data.zones.filter(z=>!ids.includes(z.id));data.entries.forEach(e=>{if(ids.includes(e.zoneId))e.zoneId=null});save();refresh();toast('Zone(s) et récoltes associées supprimées')});$('saveZone').onclick=()=>{if(!guardWrite(true))return;let z=data.zones.find(z=>z.id===selected);if(!z)return;z.name=$('name').value.trim()||z.name;z.grade=$('grade').value;save();refresh();toast('Zone enregistrée')};function localDay(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+$('entryDate').value=localDay();
+function entryZoneOptions(){let value=$('entryZone').value;$('entryZone').innerHTML='<option value="">Sans secteur (à classer plus tard)</option>';data.zones.forEach(z=>{let o=document.createElement('option');o.value=z.id;o.textContent=z.name;$('entryZone').appendChild(o)});$('entryZone').value=data.zones.some(z=>z.id===value)?value:''}
+function calcEntry(){let b=Number($('buckets').value),s=Number($('bags').value),bk=Number($('bucketkg').value),sk=Number($('bagkg').value),real=$('realkg').value.trim();let kg=real===''?b*bk+s*sk:Number(real);$('entryEstimate').textContent=Number.isFinite(kg)?kg.toLocaleString('fr-FR',{maximumFractionDigits:1})+' kg':'—';return kg}
+function refreshContainerWeights(){const fmt=(id)=>{const v=Number($(id).value);return Number.isFinite(v)?v.toLocaleString('fr-FR',{maximumFractionDigits:1}):'—'};$('bucketWeightSummary').textContent=fmt('bucketkg')+' kg / seau';$('bagWeightSummary').textContent=fmt('bagkg')+' kg / sac'}
+['buckets','bags','bucketkg','bagkg','realkg'].forEach(id=>$(id).addEventListener('input',()=>{calcEntry();if(id==='bucketkg'||id==='bagkg')refreshContainerWeights()}));
+refreshContainerWeights();
+const esc=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+function renderHarvestStats(){
+ entryZoneOptions();
+ let entries=[...data.entries].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ let sum=k=>entries.reduce((t,e)=>t+(Number(e[k])||0),0);
+ $('statTotal').textContent=sum('kg').toLocaleString('fr-FR',{maximumFractionDigits:1})+' kg';
+ $('statDays').textContent=new Set(entries.map(e=>String(e.date).slice(0,10))).size;
+ $('statBuckets').textContent=sum('buckets').toLocaleString('fr-FR');$('statBags').textContent=sum('bags').toLocaleString('fr-FR');
+ $('statAreaYield').textContent='Référence cadastrale : 7,8415 ha. Rendement indicatif sur la propriété : '+(sum('kg')/7.8415).toLocaleString('fr-FR',{maximumFractionDigits:1})+' kg/ha (ne représente pas forcément une campagne complète).';
+ $('entryList').innerHTML=entries.length?'':'<p>Aucun ramassage enregistré.</p>';
+ entries.slice(0,40).forEach(e=>{let z=data.zones.find(z=>z.id===e.zoneId);let div=document.createElement('div');div.className='entryrow';let date=String(e.date).slice(0,10);div.innerHTML='<div class="headline"><b>'+esc(date)+'</b><b>'+Number(e.kg).toLocaleString('fr-FR',{maximumFractionDigits:1})+' kg</b></div><div class="small">'+esc(z?z.name:'Sans secteur')+' · '+Number(e.buckets||0)+' seau(x) · '+Number(e.bags||0)+' sac(s)'+(e.person?' · '+esc(e.person):'')+'</div>'+(e.notes?'<div class="small">'+esc(e.notes)+'</div>':'');
+ let row=document.createElement('div');row.className='controls';let sel=document.createElement('select');sel.style.maxWidth='210px';sel.innerHTML='<option value="">Sans secteur</option>';data.zones.forEach(z=>{let opt=document.createElement('option');opt.value=z.id;opt.textContent=z.name;sel.appendChild(opt)});sel.value=z?z.id:'';sel.disabled=!mayEditEntry(e);sel.onchange=()=>{if(!guardWrite()||!mayEditEntry(e))return;e.zoneId=sel.value||null;save();renderStats();toast('Secteur modifié')};let edit=document.createElement('button');edit.textContent='Modifier';edit.disabled=!mayEditEntry(e);edit.onclick=()=>{if(!guardWrite()||!mayEditEntry(e))return;if(!confirm('Modifier cette saisie ? Les valeurs proposées reprennent les valeurs actuelles.'))return;let v=prompt('Nombre de seaux',String(e.buckets||0));if(v===null)return;let b=Number(v);v=prompt('Nombre de sacs',String(e.bags||0));if(v===null)return;let bags=Number(v);v=prompt('Poids réel en kg (laisser vide pour estimation)',e.realKg==null?'':String(e.realKg));if(v===null)return;let real=v.trim()===''?null:Number(v);if(!Number.isInteger(b)||b<0||!Number.isInteger(bags)||bags<0||(real!==null&&(!Number.isFinite(real)||real<0))){toast('Quantités invalides');return}e.buckets=b;e.bags=bags;e.realKg=real;e.kg=real===null?b*(e.bucketKg||0)+bags*(e.bagKg||0):real;save();renderStats();toast('Ramassage modifié')};let del=document.createElement('button');del.textContent='Supprimer';del.className='danger';del.disabled=!mayEditEntry(e);del.onclick=()=>{if(!guardWrite()||!mayEditEntry(e))return;if(confirm('Supprimer cette saisie de '+e.kg+' kg ?')){data.entries=data.entries.filter(x=>x.id!==e.id);save();renderStats();toast('Saisie supprimée')}};row.append(sel,edit,del);div.appendChild(row);$('entryList').appendChild(div)});
+ let dates={},zones={};entries.forEach(e=>{let day=String(e.date).slice(0,10),name=data.zones.find(z=>z.id===e.zoneId)?.name||'Sans secteur';dates[day]=(dates[day]||0)+e.kg;zones[name]=(zones[name]||0)+e.kg});
+ const fill=(el,obj)=>{$(el).innerHTML='';Object.entries(obj).sort((a,b)=>el==='byDate'?b[0].localeCompare(a[0]):b[1]-a[1]).forEach(([n,v])=>{let d=document.createElement('div');d.className='entryrow';d.textContent=n+' — '+v.toLocaleString('fr-FR',{maximumFractionDigits:1})+' kg';$(el).appendChild(d)});if(!Object.keys(obj).length)$(el).textContent='Pas de données.'};fill('byDate',dates);fill('byZone',zones);refreshHome();if(!$('statsModules').hidden)renderAnalytics();
+}
+function setHarvestMode(detail){$('harvestAdvanced').hidden=!detail;$('quickMode').classList.toggle('active',!detail);$('detailMode').classList.toggle('active',detail)}
+$('quickMode').onclick=()=>{$('realkg').value='';$('entryCaliber').value='';$('entryNotes').value='';setHarvestMode(false);calcEntry()};$('detailMode').onclick=()=>setHarvestMode(true);
+document.querySelectorAll('button[data-counter]').forEach(btn=>btn.onclick=()=>{const el=$(btn.dataset.counter);el.value=String(Math.max(0,Math.trunc(Number(el.value)||0)+Number(btn.dataset.change)));calcEntry()});
+$('addEntry').onclick=()=>{if(!guardWrite())return;let b=Number($('buckets').value),s=Number($('bags').value),bk=Number($('bucketkg').value),sk=Number($('bagkg').value),real=$('realkg').value.trim(),kg=calcEntry(),date=$('entryDate').value;
+ if(!date||![b,s,bk,sk,kg].every(x=>Number.isFinite(x)&&x>=0)||![b,s].every(Number.isInteger)||kg<=0){toast('Vérifiez la date et les quantités positives.');return}
+ data.entries.push({createdBy:familyId?cloudUser?.id:null,id:uid(),zoneId:$('entryZone').value||null,date:date+'T12:00:00',person:$('entryPerson').value.trim(),notes:$('entryNotes').value.trim(),caliber:$('entryCaliber').value,buckets:b,bags:s,bucketKg:bk,bagKg:sk,realKg:real===''?null:Number(real),kg});save();renderStats();$('buckets').value=0;$('bags').value=0;$('realkg').value='';$('entryNotes').value='';calcEntry();toast('Ramassage ajouté : '+kg+' kg')};
+$('exportCsv').onclick=()=>{const head=['Date','Secteur','Ramasseur','Seaux','kg par seau','Sacs','kg par sac','Pesée réelle kg','Poids retenu kg','Calibre','Notes'];let rows=data.entries.map(e=>[String(e.date).slice(0,10),data.zones.find(z=>z.id===e.zoneId)?.name||'Sans secteur',e.person||'',e.buckets||0,e.bucketKg||0,e.bags||0,e.bagKg||0,e.realKg??'',e.kg,e.caliber||'',e.notes||'']);let cell=v=>'"'+String(v).replace(/"/g,'""')+'"';let csv='\ufeff'+[head,...rows].map(row=>row.map(cell).join(';')).join('\r\n');let url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='castanea-recoltes-'+localDay()+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)};
+function switchTab(tab){
+const home=tab==='Home',isMap=tab==='Map',isBusiness=tab==='Business',isSettings=tab==='Settings';
+$('dashboard').hidden=!home;$('appShell').hidden=home;
+$('appShell').classList.toggle('nonmap',!isMap);
+for(const name of ['Home','Map','Harvest','Business','Stats','Settings'])$('tab'+name).classList.toggle('active',tab===name);
+$('mapModules').hidden=!isMap;$('harvestModules').hidden=tab!=='Harvest';$('calibrationModules').hidden=!isMap||!calibrationExpanded;
+$('businessModules').hidden=!isBusiness;$('statsModules').hidden=tab!=='Stats';$('settingsModules').hidden=!isSettings;
+if(isMap){setTimeout(()=>{map.invalidateSize();if(boundaryLayer)map.fitBounds(boundaryLayer.getBounds().pad(.15))},90)}
+if(home){setTimeout(()=>{previewMap.invalidateSize();refreshPreview()},100);refreshHome()}
+if(isBusiness){refreshCommerce();loadCommerce()}
+if(tab==='Stats'){renderAnalytics();if(commerceReady())loadCommerce()}
+if(isMap&&calibrationExpanded)refreshCalibration();
+if(isSettings)loadFamily();renderHarvestStats();updateCloudIndicator();updateFieldNav(tab);
+}
+let calibrationExpanded=false;
+$('toggleCalibration').onclick=()=>{calibrationExpanded=!calibrationExpanded;$('calibrationModules').hidden=!calibrationExpanded;$('toggleCalibration').textContent=calibrationExpanded?'Masquer le calibrage':'Afficher le calibrage';if(calibrationExpanded)refreshCalibration()};
+['Home','Map','Harvest','Business','Stats','Settings'].forEach(name=>{$('tab'+name).onclick=()=>switchTab(name)});
+// Barre mobile : les six vues existantes restent accessibles sans défilement horizontal.
+function updateFieldNav(tab){
+ document.querySelectorAll('#fieldNav [data-field-tab]').forEach(button=>{
+   const active=button.dataset.fieldTab===tab;
+   button.classList.toggle('active',active);
+   if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+ });
+ const moreActive=tab==='Stats'||tab==='Settings';
+ $('fieldMore').classList.toggle('active',moreActive);
+ $('fieldMoreMenu').hidden=true;
+ $('fieldMore').setAttribute('aria-expanded','false');
+}
+document.querySelectorAll('#fieldNav [data-field-tab]').forEach(button=>button.addEventListener('click',()=>{
+ const name=button.dataset.fieldTab;switchTab(name);updateFieldNav(name);
+ window.scrollTo({top:0,behavior:'instant'});
+}));
+$('fieldMore').addEventListener('click',()=>{
+ const show=$('fieldMoreMenu').hidden;
+ $('fieldMoreMenu').hidden=!show;
+ $('fieldMore').setAttribute('aria-expanded',String(show));
+});
+$('fieldClearCounters').addEventListener('click',()=>{
+ if((Number($('buckets').value)||0)+(Number($('bags').value)||0)>0&&!confirm('Remettre à zéro les contenants non enregistrés ?'))return;
+ $('buckets').value='0';$('bags').value='0';$('realkg').value='';calcEntry();
+});
+
+$('openMap').onclick=()=>switchTab('Map');$('quickMap').onclick=()=>switchTab('Map');$('quickHarvest').onclick=()=>switchTab('Harvest');$('quickSale').onclick=()=>switchTab('Business');
+$('quickCalibration').onclick=()=>{calibrationExpanded=true;switchTab('Map');$('toggleCalibration').textContent='Masquer le calibrage';$('calibrationModules').hidden=false;refreshCalibration();$('calibrationModules').scrollIntoView({behavior:'smooth',block:'start'})};
+$('homeGoStats').onclick=()=>switchTab('Stats');
+$('homeGoGoals').onclick=()=>{switchTab('Business');$('businessGoalsPanel').open=true;$('businessGoalsPanel').scrollIntoView({behavior:'smooth',block:'start'})};
+$('settingsFamilyJump').onclick=()=>$('familyModules').scrollIntoView({behavior:'smooth',block:'start'});
+$('settingsCloudJump').onclick=()=>$('cloudPanel').scrollIntoView({behavior:'smooth',block:'start'});
+$('settingsBackupJump').onclick=()=>$('export').scrollIntoView({behavior:'smooth',block:'center'});
+$('headerCloud').onclick=()=>{$('tabSettings').click();setTimeout(()=>$('cloudPanel').scrollIntoView({behavior:'smooth',block:'start'}),70)};
+function updateCloudIndicator(){const label=$('cloudState')?.textContent||'';const el=$('headerCloud');if(!el)return;el.classList.toggle('warn',/attente|conflit|erreur|absente/i.test(label));el.classList.toggle('good',/synchronis|enregistr|cloud version/i.test(label));$('headerCloudText').textContent=/conflit|erreur/i.test(label)?'Attention':/attente/i.test(label)?'En attente':/synchronis|enregistr/i.test(label)?'Synchronisé':'Cloud'}
+const cloudObserver=new MutationObserver(updateCloudIndicator);cloudObserver.observe($('cloudState'),{childList:true,subtree:true,characterData:true});updateCloudIndicator();
+function weatherText(code){if(code===0)return ['☀','Ciel dégagé'];if(code<=3)return ['⛅','Partiellement nuageux'];if(code===45||code===48)return ['🌫','Brouillard'];if(code>=51&&code<=67)return ['🌧','Pluie ou bruine'];if(code>=71&&code<=77)return ['❄','Neige'];if(code>=80&&code<=82)return ['🌦','Averses'];if(code>=95)return ['⛈','Orages'];return ['☁','Couvert']}
+async function fetchWeather(){
+ $('weatherMain').textContent='Chargement…';$('weatherDescription').textContent='Prévisions près de la propriété';
+ try{let url='https://api.open-meteo.com/v1/forecast?latitude=41.0699805&longitude=-7.5309673&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=sunrise,sunset,precipitation_sum&forecast_days=1&timezone=Europe%2FLisbon';let res=await fetch(url,{cache:'no-store'});if(!res.ok)throw Error('API');let d=await res.json(),c=d.current,day=d.daily;let [icon,desc]=weatherText(c.weather_code);$('weatherIcon').textContent=icon;$('weatherMain').textContent=Math.round(c.temperature_2m)+' °C';$('weatherDescription').textContent=desc+' · humidité '+c.relative_humidity_2m+' %';$('weatherRain').textContent=Number(day.precipitation_sum[0]).toLocaleString('fr-FR',{maximumFractionDigits:1})+' mm';$('weatherWind').textContent=Math.round(c.wind_speed_10m)+' km/h';$('weatherSunrise').textContent=day.sunrise[0].slice(11,16);$('weatherSunset').textContent=day.sunset[0].slice(11,16);$('weatherUpdated').textContent='Open-Meteo · relevé modélisé à '+c.time.replace('T',' ')+' (Portugal)';
+ }catch(e){$('weatherMain').textContent='Indisponible';$('weatherDescription').textContent='Vérifiez la connexion internet';$('weatherUpdated').textContent='Aucune donnée météo disponible actuellement';$('weatherRain').textContent='—';$('weatherWind').textContent='—';$('weatherSunrise').textContent='—';$('weatherSunset').textContent='—'}
+}
+$('refreshWeather').onclick=fetchWeather;
+const previewMap=L.map('previewMap',{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false}).setView(center,16);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri'}).addTo(previewMap);
+let previewBoundary=null,previewZoneLayers=[];
+function refreshPreview(){if(previewBoundary){previewMap.removeLayer(previewBoundary);previewBoundary=null}previewZoneLayers.forEach(l=>previewMap.removeLayer(l));previewZoneLayers=[];
+if(data.boundary&&data.boundary.length>=3){previewBoundary=L.polygon(data.boundary,{color:'#f5df98',weight:3,fillColor:'#416643',fillOpacity:.08,dashArray:'5,5'}).addTo(previewMap);previewMap.fitBounds(previewBoundary.getBounds().pad(.25))}
+else previewMap.setView(center,16);
+data.zones.forEach(z=>{previewZoneLayers.push(L.polygon(z.points,{color:colors[z.grade]||colors.unknown,weight:2,fillOpacity:.35}).addTo(previewMap))});}
+function refreshHome(){refreshCommerce();let entries=data.entries;let sum=(k)=>entries.reduce((a,e)=>a+(Number(e[k])||0),0);let done=new Set(entries.filter(e=>e.zoneId&&Number(e.kg)>0).map(e=>e.zoneId)).size;$('homeKg').textContent=sum('kg').toLocaleString('fr-FR',{maximumFractionDigits:1})+' kg';$('homeBuckets').textContent=sum('buckets').toLocaleString('fr-FR');$('homeBags').textContent=sum('bags').toLocaleString('fr-FR');$('homeTreated').textContent=done+' / '+data.zones.length;$('homeBoundary').textContent=data.boundary?area(data.boundary).toLocaleString('fr-FR',{maximumFractionDigits:2})+' ha':'À tracer';$('homeProgressHelp').textContent=data.zones.length?'« Traités » = secteurs ayant au moins une récolte enregistrée (ce n’est pas une confirmation de fin de ramassage).':'Les secteurs seront tracés sur place : progression indisponible pour le moment.';refreshPreview()}
+function refreshCalibration(){let sel=$('calZone'),v=sel.value;sel.innerHTML='';for(let z of data.zones){let o=document.createElement('option');o.value=z.id;o.textContent=z.name;sel.append(o)}sel.value=data.zones.some(z=>z.id===v)?v:data.zones[0]?.id||'';let has=data.zones.length>0;$('calEmpty').hidden=has;$('calForm').hidden=!has;if(has){let z=data.zones.find(z=>z.id===sel.value);$('calSize').value=z.caliberScore||3;$('calYield').value=z.yieldScore||3;previewCalibration()}}
+function previewCalibration(){let c=Number($('calSize').value),y=Number($('calYield').value),avg=(c+y)/2,grade=avg>=4.25?'dark':avg>=3.25?'light':avg>=2.25?'orange':'red';$('calSizeLabel').textContent=c+' / 5';$('calYieldLabel').textContent=y+' / 5';let labels={dark:'Excellent · vert foncé',light:'Bon · vert clair',orange:'Moyen · orange',red:'Faible · rouge'};$('calResult').textContent=labels[grade];$('calResult').style.color=colors[grade];return grade}
+$('calSize').oninput=previewCalibration;$('calYield').oninput=previewCalibration;$('calZone').onchange=refreshCalibration;
+$('saveCalibration').onclick=()=>{if(!guardWrite(true))return;let z=data.zones.find(z=>z.id===$('calZone').value);if(!z)return;z.caliberScore=Number($('calSize').value);z.yieldScore=Number($('calYield').value);z.grade=previewCalibration();save();refresh();refreshHome();toast('Évaluation du secteur enregistrée')};
+$('village').onclick=()=>map.setView(center,17);$('locate').onclick=()=>map.locate({setView:true,maxZoom:17,enableHighAccuracy:true});map.on('locationerror',()=>toast('Position indisponible : vérifiez les autorisations GPS.'));
+$('export').onclick=()=>{let blob=new Blob([JSON.stringify({...data,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='castanea-sauvegarde-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};$('import').onclick=()=>{if(!guardWrite(true))return;$('file').click()};$('file').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.zones)||!Array.isArray(d.entries)||d.zones.some(z=>!z.id||!Array.isArray(z.points)||z.points.length<3||z.points.some(p=>!Array.isArray(p)||p.length!==2||!p.every(Number.isFinite)))||d.entries.some(x=>!Number.isFinite(x.kg)||x.kg<0))throw Error();if(!confirm('Remplacer toutes les données de cet appareil par celles du fichier ?'))return;data={version:2,boundary:Array.isArray(d.boundary)&&d.boundary.length>=3&&d.boundary.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite))?d.boundary:null,zones:d.zones,entries:d.entries};save();refresh(true);toast('Import terminé')}catch(err){toast('Fichier de sauvegarde invalide.')}e.target.value=''};
+// Synchronisation explicite et optionnelle. Une ligne / utilisateur, verrou de version.
+const CFG_KEY='castanea-cloud-config',AUTO_KEY='castanea-cloud-auto';
+function updateCloudStatus(extra){const el=$('cloudState');if(!el)return;
+ el.textContent=extra||(cloudBusy?'Synchronisation en cours…':!cloudConfigured?'Mode local · aucune connexion cloud':!cloudUser?'Cloud configuré · connexion requise':(localDirty?'Modifications locales en attente · ':'Données locales synchronisées · ')+'version cloud '+(cloudVersion===null?'inconnue':cloudVersion));}
+function configuration(){try{return JSON.parse(localStorage.getItem(CFG_KEY)||'null')}catch(e){return null}}
+function validateCloudData(d){return !!(d&&typeof d==='object'&&Array.isArray(d.zones)&&Array.isArray(d.entries)&&(!d.boundary||Array.isArray(d.boundary))&&d.zones.every(z=>z&&typeof z.id==='string'&&Array.isArray(z.points)&&z.points.length>=3&&z.points.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite)))&&d.entries.every(e=>e&&Number.isFinite(e.kg)&&e.kg>=0))}
+// Suivi de diagnostic local sans enregistrer ni afficher les jetons d’authentification.
+const AUTH_DIAG_KEY='castanea-auth-diag-v035';
+function authDiagnostic(message){const s=String(message||'');try{sessionStorage.setItem(AUTH_DIAG_KEY,s)}catch(e){}const el=$('cloudDiagnostic');if(el)el.textContent='Diagnostic de connexion : '+s}
+function authDisplay(session){cloudUser=session?.user||null;$('cloudLogin').hidden=!!cloudUser;$('cloudLogged').hidden=!cloudUser;$('cloudIdentity').textContent=cloudUser?'Compte : '+(cloudUser.email||cloudUser.id)+(familyId?' · Famille ('+familyRole+')':''):'';updateCloudStatus()}
+function authUrlState(){const q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.replace(/^#/,''));return {q,h,hasCode:q.has('code'),hasTokens:h.has('access_token'),error:q.get('error_description')||h.get('error_description')||q.get('error')||h.get('error')}}
+async function initCloud(){
+ const c=configuration();
+ try{const prior=sessionStorage.getItem(AUTH_DIAG_KEY);if(prior)authDiagnostic(prior)}catch(e){}
+ if(!c){cloudConfigured=false;updateCloudStatus();authDiagnostic('Configuration cloud absente.');return}
+ if(!window.supabase||!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(c.url)||!c.key){updateCloudStatus('Configuration Supabase manquante ou invalide');authDiagnostic('Bibliothèque Supabase indisponible ou configuration invalide.');return}
+ const callback=authUrlState();
+ // Laisser supabase-js gérer l’échange du code PKCE pendant son initialisation.
+ // Ne PAS le faire en parallèle : deux échanges du même code se contredisent.
+ try{
+  if(callback.error)authDiagnostic('Lien refusé par Supabase : '+callback.error);
+  else if(callback.hasCode)authDiagnostic('Code PKCE reçu ; échange de session en cours…');
+  else if(callback.hasTokens)authDiagnostic('Jetons reçus dans le lien ; restauration en cours…');
+  else authDiagnostic('Ouverture ordinaire ; recherche d’une session enregistrée…');
+  cloudClient=window.supabase.createClient(c.url.replace(/\/$/,''),c.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
+  cloudConfigured=true;$('sbUrl').value=c.url;$('sbKey').value=c.key;
+  cloudClient.auth.onAuthStateChange((event,session)=>{
+   if(event==='PASSWORD_RECOVERY'&&session){
+    setTimeout(async()=>{const next=prompt('Nouveau mot de passe CASTANEA (8 caractères minimum) :');if(!next)return;if(next.length<8){toast('Mot de passe trop court');return}
+     const {error}=await cloudClient.auth.updateUser({password:next});if(error)authDiagnostic('Modification du mot de passe impossible : '+error.message);else{authDiagnostic('Mot de passe mis à jour.');toast('Mot de passe mis à jour.')}},0);
+   }
+   authDisplay(session);
+   if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'){if(event==='SIGNED_IN')familyInfoLoaded=false;
+     authDiagnostic('Session reconnue ('+event+').');
+     if(cloudUser)setTimeout(()=>checkCloud(false),0);
+   }else if(event==='SIGNED_OUT')authDiagnostic('Session fermée.');
+  });
+  const {data:auth,error}=await cloudClient.auth.getSession();
+  if(error)throw error;
+  authDisplay(auth.session);
+  if(auth.session){
+   authDiagnostic('Session active et conservée dans Safari.');
+   // Retirer uniquement les paramètres d’authentification après succès, sans supprimer l’URL applicative.
+   if(callback.hasCode||callback.hasTokens)history.replaceState(null,'',location.pathname);
+   await checkCloud(false);
+  }else if(callback.error){updateCloudStatus('Lien refusé : '+callback.error)}
+  else if(callback.hasCode||callback.hasTokens){
+   authDiagnostic('Un lien d’authentification a été reçu, mais aucune session n’a été créée. Vérifiez que le lien a été demandé dans le même Safari et ouvrez le diagnostic.');
+   updateCloudStatus('Lien reçu · connexion non finalisée');
+  }else{authDiagnostic('Aucune session enregistrée. Si le lien a été ouvert dans un autre onglet, vérifier les cookies et le stockage Safari.');}
+ }catch(e){authDiagnostic('Échec de connexion : '+(e?.message||'Erreur inconnue'));updateCloudStatus('Erreur d’authentification : '+(e?.message||'inconnue'))}
+}
+$('cloudTest').onclick=async()=>{
+ if(!cloudClient){authDiagnostic('Client Supabase absent : vérifier la configuration et la connexion Internet.');return}
+ authDiagnostic('Vérification de la session…');
+ try{const {data:result,error}=await cloudClient.auth.getUser();if(error)throw error;
+  if(result.user){const {data:session}=await cloudClient.auth.getSession();authDisplay(session.session);authDiagnostic('Compte authentifié : '+(result.user.email||'utilisateur')+'.');await checkCloud(false)}
+  else {authDisplay(null);authDiagnostic('Aucun compte connecté sur cet onglet Safari. Aucun transfert effectué.')}}
+ catch(e){authDiagnostic('Diagnostic : '+(e?.message||'aucune session valide'));updateCloudStatus('Connexion requise · diagnostic disponible ci-dessous')}
+};
+async function cloudRow(){if(!cloudClient||!cloudUser)throw Error('Connectez-vous au cloud.');
+ if(familyId){const {data:row,error}=await cloudClient.rpc('castanea_family_get');if(error)throw error;return row;}
+ const {data:row,error}=await cloudClient.from('castanea_state').select('state,version,updated_at').eq('owner_id',cloudUser.id).maybeSingle();if(error)throw error;return row}
+async function familyRpc(fn,args={}){if(!cloudClient||!cloudUser)throw Error('Connexion requise');const {data:result,error}=await cloudClient.rpc(fn,args);if(error)throw error;return result}
+async function loadFamilyInfo(){if(!cloudUser)return;
+ try{const x=await familyRpc('castanea_family_info');familyInfoLoaded=true;
+ if(x?.active){familyId=x.property_id;familyRole=x.role;}
+ else{familyId=null;familyRole=null;}
+ setTimeout(()=>loadCommerce(),0);
+ }catch(e){familyInfoLoaded=false;throw Error('Migration familiale SQL non installée ou inaccessible : '+e.message)}
+}
+function syncPrincipal(){return familyId?'family:'+familyId:cloudUser?.id}
+function canWrite(){return !familyId||familyRole==='admin'||familyRole==='contributor'}
+function canEditMap(){return !familyId||familyRole==='admin'}
+function mayEditEntry(entry){return !familyId||familyRole==='admin'||(familyRole==='contributor'&&entry.createdBy===cloudUser?.id)}
+function guardWrite(mapEdit=false){if(mapEdit?!canEditMap():!canWrite()){toast('Action interdite pour votre rôle familial.');return false}return true}
+async function loadFamily(){if(!cloudUser){$('familyState').textContent='Connectez-vous dans l’onglet Calibrage.';return}
+ try{await loadFamilyInfo();$('familyActive').hidden=!familyId;$('familyInit').hidden=!!familyId;$('familyJoin').hidden=!!familyId;
+ $('familyState').textContent=familyId?'Propriété partagée · '+familyRole+' · accès autorisé':'Aucune propriété familiale associée à ce compte';
+ if(!familyId)return;
+ $('familyRole').textContent='Identifiant de propriété : '+familyId+' · rôle : '+familyRole;
+ $('familyAdmin').hidden=familyRole!=='admin';
+ const members=await familyRpc('castanea_family_members');$('familyMembers').replaceChildren();
+ members.forEach(m=>{let row=document.createElement('div');row.className='entryrow';let t=document.createElement('div');t.textContent=(m.email||m.user_id)+' — '+m.role;row.append(t);
+ if(familyRole==='admin'&&m.user_id!==cloudUser.id){let btn=document.createElement('button');btn.type='button';btn.textContent='Retirer cet accès';btn.onclick=async()=>{if(!confirm('Révoquer cet accès à la propriété ?'))return;try{await familyRpc('castanea_family_remove',{member_id:m.user_id});await loadFamily()}catch(e){toast(e.message)}};row.append(btn)}
+ $('familyMembers').append(row)});
+ }catch(e){$('familyState').textContent='Erreur Famille : '+e.message}}
+
+// V0.7.1 : base locale persistante et contrôle strict avant chaque transfert.
+const BASE_KEY='castanea-cloud-base', DIRTY_KEY='castanea-cloud-dirty';
+let conflictBlocked=false;let familyId=null,familyRole=null,familyInfoLoaded=false,inviteToken='';
+function paired(){return !!(syncPrincipal()&&localStorage.getItem('castanea-paired-'+syncPrincipal())==='true')}
+function baseRecord(){try{const b=JSON.parse(localStorage.getItem(BASE_KEY)||'null');return b?.owner===syncPrincipal()?b:null}catch(e){return null}}
+function restoreAutomaticSync(){const enabled=localStorage.getItem(AUTO_KEY)==='true' && !!cloudUser && !!baseRecord() && paired();$('autoCloud').checked=enabled;}
+function markClean(state,version){
+ cloudVersion=version;localStorage.setItem(BASE_KEY,JSON.stringify({owner:syncPrincipal(),version,state}));
+ localDirty=JSON.stringify(data)!==JSON.stringify(state);localStorage.setItem(DIRTY_KEY,String(localDirty));
+ conflictBlocked=false;
+}
+function localChanged(){const b=baseRecord();return localDirty||localStorage.getItem(DIRTY_KEY)==='true'||!!(b&&JSON.stringify(data)!==JSON.stringify(b.state))}
+function downloadSnapshot(snapshot,prefix){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(snapshot,null,2)],{type:'application/json'}));a.download=prefix+'-'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000)}
+function stopForConflict(row){
+ conflictBlocked=true;localDirty=true;localStorage.setItem(DIRTY_KEY,'true');
+ // Les deux copies sont sauvegardées dans Safari et téléchargeables séparément.
+ try{localStorage.setItem('castanea-conflict-local',JSON.stringify(data));localStorage.setItem('castanea-conflict-cloud',JSON.stringify(row.state))}catch(e){}
+ updateCloudStatus('CONFLIT : modifications sur deux appareils · aucun écrasement · exportez les deux copies');
+}
+async function checkCloud(load=false){if(cloudBusy||!cloudUser)return;try{
+ if(!familyInfoLoaded)await loadFamilyInfo();
+ restoreAutomaticSync();
+ const row=await cloudRow();if(!row){cloudVersion=0;updateCloudStatus('Cloud vide · premier transfert manuel requis');return}
+ if(!validateCloudData(row.state))throw Error('Données cloud invalides');
+ const b=baseRecord();const changed=localChanged();
+ if(!paired()){cloudVersion=row.version;updateCloudStatus('Cloud version '+row.version+' disponible · récupération manuelle initiale nécessaire');return}
+ if(!b){cloudVersion=row.version;updateCloudStatus('Base de synchronisation absente · récupération manuelle nécessaire');return}
+ cloudVersion=b.version;
+ if(row.version===b.version){if(changed){updateCloudStatus('Modifications locales en attente · version '+b.version);scheduleAutoCloud()}else updateCloudStatus('Données synchronisées · version cloud '+b.version);return}
+ if(changed){stopForConflict(row);return}
+ if(!$('autoCloud').checked){updateCloudStatus('Nouvelle version cloud '+row.version+' disponible · choisissez Récupérer');return}
+ cloudBusy=true;
+ // Protection contre un changement local intervenant pendant la lecture réseau.
+ const before=JSON.stringify(data);
+ if(localChanged()||JSON.stringify(data)!==before){cloudBusy=false;return}
+ data=JSON.parse(JSON.stringify(row.state));localStorage.setItem(KEY,JSON.stringify(data));markClean(row.state,row.version);
+ refresh(true);refreshPreview();refreshHome();updateCloudStatus('Cloud reçu automatiquement · version '+row.version);
+ cloudBusy=false;
+ }catch(e){cloudBusy=false;updateCloudStatus('Erreur cloud : '+e.message)}}
+function exportBackupNow(){downloadSnapshot(data,'castanea-sauvegarde-locale')}
+async function uploadToCloud(manual=true){if(cloudBusy||!cloudUser)return;
+ if(!familyInfoLoaded)try{await loadFamilyInfo()}catch(e){updateCloudStatus(e.message);return}
+ if(!canWrite()){updateCloudStatus('Lecture seule : transfert interdit');return}if(!validateCloudData(data)){toast('Données locales invalides, envoi bloqué');return}
+ if(conflictBlocked){updateCloudStatus('Conflit non résolu · exportez les copies avant toute action');return}
+ cloudBusy=true;updateCloudStatus();try{
+ const row=await cloudRow(),serverVersion=row?.version||0,b=baseRecord();
+ if(row&&!paired()){updateCloudStatus('Copie cloud existante · récupération initiale nécessaire');return}
+ if(row&&(!b||serverVersion!==b.version)){stopForConflict(row);return}
+ if(!row&&paired()){updateCloudStatus('Copie cloud absente : intervention manuelle requise');return}
+ const snapshot=JSON.parse(JSON.stringify(data));
+ const {data:result,error}=await cloudClient.rpc(familyId?'castanea_family_save':'castanea_save_if_version',{expected_version:serverVersion,new_state:snapshot});if(error)throw error;
+ if(!result?.ok){const latest=await cloudRow();if(latest)stopForConflict(latest);else updateCloudStatus('Conflit : envoi refusé');return}
+ localStorage.setItem('castanea-paired-'+syncPrincipal(),'true');markClean(snapshot,result.version);
+ updateCloudStatus('Enregistré dans le cloud · version '+result.version+(localDirty?' · nouvelles modifications en attente':''));
+ if(manual)toast('Données envoyées au cloud');
+ }catch(e){updateCloudStatus('Échec envoi cloud : '+e.message)}finally{cloudBusy=false;if(localDirty&&!conflictBlocked)scheduleAutoCloud()}}
+async function downloadFromCloud(){if(cloudBusy||!cloudUser)return;
+ if(!familyInfoLoaded)try{await loadFamilyInfo()}catch(e){updateCloudStatus(e.message);return}cloudBusy=true;updateCloudStatus();try{
+ const row=await cloudRow();if(!row){updateCloudStatus('Aucune sauvegarde cloud disponible');return}
+ if(!validateCloudData(row.state))throw Error('Copie cloud non valide');
+ const changed=localChanged();
+ if(changed&&paired()){
+  stopForConflict(row);
+  alert('Modifications locales détectées. Aucune donnée remplacée. Exportez les deux copies depuis les boutons de conflit, puis résolvez les différences avant une récupération.');return;
+ }
+ if(!confirm('Remplacer les données locales par la copie cloud ? Une sauvegarde JSON sera téléchargée avant remplacement.'))return;
+ exportBackupNow();data=JSON.parse(JSON.stringify(row.state));localStorage.setItem(KEY,JSON.stringify(data));
+ localStorage.setItem('castanea-paired-'+syncPrincipal(),'true');markClean(row.state,row.version);
+ refresh(true);refreshPreview();refreshHome();updateCloudStatus('Copie cloud récupérée · version '+row.version);toast('Données cloud restaurées');
+ }catch(e){updateCloudStatus('Erreur de récupération : '+e.message)}finally{cloudBusy=false}}
+function scheduleAutoCloud(){if(!cloudUser||!canWrite()||!$('autoCloud')?.checked||!paired()||!baseRecord()||conflictBlocked||cloudBusy||!localChanged())return;clearTimeout(autoTimer);autoTimer=setTimeout(()=>uploadToCloud(false),2200)}
+$('saveSbConfig').onclick=async()=>{let url=$('sbUrl').value.trim(),key=$('sbKey').value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(url)||!key||/service_role|sb_secret_/i.test(key)){toast('Utilisez une URL Supabase et uniquement une clé publique.');return}localStorage.setItem(CFG_KEY,JSON.stringify({url,key}));location.reload()};
+$('clearSbConfig').onclick=()=>{if(confirm('Déconnecter la configuration cloud de cet appareil ? Les données locales sont conservées.')){localStorage.removeItem(CFG_KEY);localStorage.removeItem(AUTO_KEY);location.reload()}};
+// Authentification par mot de passe, sans dépendance au lien magique.
+function loginFields(){const email=$('cloudEmail').value.trim(),password=$('cloudPassword').value;
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw Error('Renseignez une adresse e-mail valide.');
+ if(password.length<8)throw Error('Le mot de passe doit contenir au moins 8 caractères.');
+ return {email,password};}
+async function passwordAction(kind){if(!cloudClient){toast('Configurez Supabase avant de vous connecter.');return}
+ const button=$(kind==='login'?'cloudPasswordLogin':'cloudPasswordSignup');button.disabled=true;
+ try{const {email,password}=loginFields();authDiagnostic(kind==='login'?'Connexion par mot de passe en cours…':'Création du compte en cours…');
+ const result=kind==='login' ? await cloudClient.auth.signInWithPassword({email,password}) : await cloudClient.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
+ if(result.error)throw result.error;
+ if(result.data?.session){authDisplay(result.data.session);authDiagnostic('Session Supabase active. Compte connecté.');$('cloudPassword').value='';toast('Connecté à CASTANEA Cloud');await checkCloud(false)}
+ else{authDiagnostic('Compte créé, mais session absente : vérifiez la confirmation de votre adresse e-mail dans Supabase avant de vous connecter.');toast('Vérifiez la confirmation de votre compte Supabase.');}
+ }catch(e){authDiagnostic('Connexion : '+(e.message||'erreur inconnue'));toast('Erreur : '+(e.message||'inconnue'))}
+ finally{button.disabled=false}}
+$('cloudPasswordLogin').onclick=()=>passwordAction('login');
+$('cloudPasswordSignup').onclick=()=>passwordAction('signup');
+$('cloudPasswordReset').onclick=async()=>{
+ if(!cloudClient){toast('Configurez Supabase.');return}
+ const email=$('cloudEmail').value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){toast('Saisissez votre e-mail.');return}
+ if(!confirm('Envoyer un e-mail de réinitialisation du mot de passe ? Cela utilise le quota d’envoi Supabase.'))return;
+ const button=$('cloudPasswordReset');button.disabled=true;
+ try{const {error}=await cloudClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;
+ authDiagnostic('E-mail de réinitialisation demandé. Ouvrez-le dans Safari.');toast('E-mail de réinitialisation demandé.');
+ }catch(e){authDiagnostic('Réinitialisation impossible : '+(e.message||'erreur'));toast('Erreur : '+(e.message||'inconnue'))}finally{button.disabled=false}
+};
+
+$('familyBootstrap').onclick=async()=>{if(!cloudUser)return;
+ if(!confirm('Créer un espace familial à partir de votre sauvegarde cloud personnelle ? Faites d’abord un Export JSON. L’ancienne copie restera intacte.'))return;
+ try{const out=await familyRpc('castanea_family_bootstrap');familyId=out.property_id;familyRole='admin';familyInfoLoaded=true;
+ // Ne pas émettre de données : récupérer d’abord exactement la copie familiale créée côté serveur.
+ $('autoCloud').checked=false;localStorage.setItem(AUTO_KEY,'false');
+ await loadFamily();updateCloudStatus('Espace familial créé · récupérez les données cloud depuis Calibrage');
+ toast('Espace familial créé. Récupérez la copie cloud.');
+ }catch(e){toast('Migration familiale : '+e.message);$('familyState').textContent=e.message}};
+$('familyRedeem').onclick=async()=>{const code=$('familyInviteCode').value.trim();if(!/^[a-f0-9-]{36}$/i.test(code)){toast('Code d’invitation invalide');return}
+ if(!confirm('Rejoindre la propriété partagée ? Faites d’abord un Export JSON.'))return;
+ try{await familyRpc('castanea_family_join',{invitation_code:code});familyInfoLoaded=false;await loadFamily();
+ $('autoCloud').checked=false;localStorage.setItem(AUTO_KEY,'false');
+ updateCloudStatus('Invitation acceptée · récupérez maintenant la propriété cloud');
+ toast('Invitation acceptée. Récupérez les données cloud.');}catch(e){toast('Invitation refusée : '+e.message)}};
+$('familyCreateInvite').onclick=async()=>{try{const x=await familyRpc('castanea_family_invite',{invite_role:$('familyInviteRole').value});inviteToken=x.token;
+ $('familyInviteOutput').textContent='Code privé valable jusqu’au '+new Date(x.expires_at).toLocaleString('fr-FR')+' : '+inviteToken;
+ $('familyCopyInvite').hidden=false;}catch(e){toast('Invitation : '+e.message)}};
+$('familyCopyInvite').onclick=()=>{if(inviteToken&&navigator.clipboard?.writeText)navigator.clipboard.writeText(inviteToken).then(()=>toast('Code copié')).catch(()=>toast('Sélectionnez le code affiché'));else toast('Sélectionnez le code affiché')};
+
+$('cloudPassword').addEventListener('keydown',e=>{if(e.key==='Enter')passwordAction('login')});
+$('conflictLocal').onclick=()=>{try{const d=JSON.parse(localStorage.getItem('castanea-conflict-local'));if(d)downloadSnapshot(d,'castanea-conflit-local');else toast('Aucun conflit sauvegardé')}catch(e){toast('Aucune copie locale disponible')}};
+$('conflictRemote').onclick=()=>{try{const d=JSON.parse(localStorage.getItem('castanea-conflict-cloud'));if(d)downloadSnapshot(d,'castanea-conflit-cloud');else toast('Aucun conflit sauvegardé')}catch(e){toast('Aucune copie cloud disponible')}};
+$('cloudLogout').onclick=async()=>{if(cloudClient)await cloudClient.auth.signOut();cloudUser=null;cloudVersion=null;familyInfoLoaded=false;familyId=null;familyRole=null;lockBoundary();updateCloudStatus()};
+$('uploadCloud').onclick=()=>uploadToCloud(true);$('downloadCloud').onclick=downloadFromCloud;$('cloudRefresh').onclick=()=>checkCloud(false);
+$('autoCloud').checked=false;$('autoCloud').onchange=()=>{if($('autoCloud').checked&&!baseRecord()){$('autoCloud').checked=false;toast('Récupérez ou envoyez les données manuellement avant activation');return}localStorage.setItem(AUTO_KEY,String($('autoCloud').checked));updateCloudStatus($('autoCloud').checked?'Auto-sync activée · contrôle de version et sauvegarde locale actifs':'Auto-sync désactivée');if($('autoCloud').checked)checkCloud(false)};
+window.addEventListener('focus',()=>{if(cloudUser)checkCloud(false)});
+setInterval(()=>{if(cloudUser&&!cloudBusy){checkCloud(false)}},30000);
+
+
+// V0.7.1 · Business & Objectifs : tables Supabase séparées de la sauvegarde historique.
+const salesState={items:[],goals:[],loadedProperty:null,loading:false,editId:null};
+const eur=n=>Number(n||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+const kgfmt=n=>Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:3})+' kg';
+const qtySum=dataList=>dataList.reduce((n,s)=>n+Number(s.quantity_kg||0),0);
+function salesMetrics(){const list=salesState.items;const sold=qtySum(list);const revenue=list.reduce((n,s)=>n+Number(s.total_eur||Number(s.quantity_kg)*Number(s.unit_price_eur)),0);const paid=list.filter(s=>s.payment_status==='paid').reduce((n,s)=>n+Number(s.total_eur||Number(s.quantity_kg)*Number(s.unit_price_eur)),0);const harvested=data.entries.reduce((n,e)=>n+(Number(e.kg)||0),0);return {sold,revenue,paid,stock:harvested-sold,avg:sold?revenue/sold:0}}
+function makeText(tag,value,cls){const e=document.createElement(tag);e.textContent=value;if(cls)e.className=cls;return e}
+function goalBar(title,current,target,unit){const box=document.createElement('div');box.className='goal-widget';const pct=target>0?Math.max(0,100*current/target):0;const row=document.createElement('div');row.className='goal-top';row.append(makeText('span',title),makeText('strong',target>0?(pct<10?pct.toLocaleString('fr-FR',{maximumFractionDigits:1}):Math.round(pct))+' %':'À définir'));const track=document.createElement('div');track.className='goal-track';const fill=document.createElement('div');fill.className='goal-fill';fill.style.width=Math.min(100,pct)+'%';track.append(fill);const note=makeText('small',`${unit==='€'?eur(current):kgfmt(current)} / ${target?unit==='€'?eur(target):kgfmt(target):'objectif non défini'}`,'small');box.append(row,track,note);return box}
+function refreshCommerce(){const m=salesMetrics();for(const [id,value] of Object.entries({bizRevenue:eur(m.revenue),bizSold:kgfmt(m.sold),bizPaid:eur(m.paid),bizAverage:m.sold?eur(m.avg):'—',statRevenue:eur(m.revenue),statSold:kgfmt(m.sold),statPaid:eur(m.paid),statStock:kgfmt(m.stock),homeRevenue:eur(m.revenue),homeSold:kgfmt(m.sold),homeStock:kgfmt(m.stock),homePaid:eur(m.paid)})){const el=$(id);if(el)el.textContent=value;}const y=Number($('goalYear').value)||new Date().getFullYear(),g=salesState.goals.find(x=>x.campaign_year===y);let harvested=data.entries.filter(e=>String(e.date||'').startsWith(String(y))).reduce((n,e)=>n+Number(e.kg||0),0),salesY=salesState.items.filter(x=>String(x.sold_at).startsWith(String(y))),sold=qtySum(salesY),revenue=salesY.reduce((n,s)=>n+Number(s.total_eur||Number(s.quantity_kg)*Number(s.unit_price_eur)),0);for(const id of ['goalProgress','homeGoals']){const el=$(id);if(!el)continue;el.replaceChildren(goalBar('Récolte',harvested,Number(g?.harvest_target_kg||0),'kg'),goalBar('Chiffre d’affaires',revenue,Number(g?.revenue_target_eur||0),'€'),goalBar('Kilos vendus',sold,Number(g?.sold_target_kg||0),'kg'));}renderSalesList();refreshGoalExperience(harvested,g)}
+function refreshGoalExperience(harvested,g){
+ const milestones=document.getElementById('homeMilestones');if(milestones){const target=Number(g?.harvest_target_kg||0),pct=target>0?100*harvested/target:0;milestones.replaceChildren();for(const threshold of [25,50,75,100]){const badge=document.createElement('span');badge.className='milestone'+(pct>=threshold?' unlocked':'');badge.textContent=(pct>=threshold?'🏆 ':'◇ ')+threshold+' %';badge.title=pct>=threshold?'Palier atteint':'Palier non atteint';milestones.append(badge)}}
+ const sim=document.getElementById('goalSimulation');if(!sim)return;const target=Number(g?.harvest_target_kg||0);
+ if(!sim.dataset.manual)sim.value=String(Math.max(100,Math.min(10000,target||2500)));
+ const value=Number(sim.value);document.getElementById('goalSimTarget').textContent=value.toLocaleString('fr-FR')+' kg';document.getElementById('goalSimulationFill').style.width=Math.min(100,100*harvested/value)+'%';document.getElementById('goalSimInfo').textContent=`${kgfmt(harvested)} / ${kgfmt(value)} · ${(100*harvested/value).toLocaleString('fr-FR',{maximumFractionDigits:1})} % (simulation)`;
+}
+document.getElementById('goalSimulation').addEventListener('input',()=>{document.getElementById('goalSimulation').dataset.manual='1';refreshCommerce()});
+document.getElementById('goalResetSimulation').onclick=()=>{delete document.getElementById('goalSimulation').dataset.manual;refreshCommerce()};
+function commerceReady(){return !!(cloudClient&&cloudUser&&familyId)}
+async function loadCommerce(){if(!commerceReady()){salesState.items=[];salesState.goals=[];salesState.loadedProperty=null;$('businessStatus').textContent='Connectez-vous à une propriété familiale pour consulter les ventes.';$('goalsStatus').textContent='Connexion familiale requise.';refreshCommerce();return}if(salesState.loading)return;salesState.loading=true;try{const [sr,gr]=await Promise.all([cloudClient.from('castanea_sales').select('*').eq('property_id',familyId).order('sold_at',{ascending:false}).limit(1000),cloudClient.from('castanea_goals').select('*').eq('property_id',familyId)]);if(sr.error)throw sr.error;if(gr.error)throw gr.error;salesState.items=sr.data||[];salesState.goals=gr.data||[];salesState.loadedProperty=familyId;$('businessStatus').textContent='Registre familial synchronisé · '+salesState.items.length+' vente(s)';$('goalsStatus').textContent='Objectifs familiaux chargés';if(!$('statsModules').hidden)renderAnalytics();const y=Number($('goalYear').value)||new Date().getFullYear(),g=salesState.goals.find(x=>x.campaign_year===y);$('goalHarvest').value=g?.harvest_target_kg??0;$('goalRevenue').value=g?.revenue_target_eur??0;$('goalSold').value=g?.sold_target_kg??0;$('goalEditor').hidden=familyRole!=='admin';$('saleForm').querySelectorAll('input,select,textarea,button').forEach(el=>{if(el.id!=='cancelSale')el.disabled=familyRole==='viewer'});refreshCommerce();}catch(e){$('businessStatus').textContent='Erreur Business : '+e.message;$('goalsStatus').textContent='Migration SQL V0.7.1 à vérifier : '+e.message}finally{salesState.loading=false}}
+function resetSale(){salesState.editId=null;$('saleEditId').value='';$('saleForm').reset();$('saleDate').value=localDay();$('cancelSale').hidden=true;$('saveSale').textContent='Enregistrer la vente';$('saleTotal').textContent=eur(0)}
+function setSaleMode(detailed){$('saleExtra').hidden=!detailed;$('saleQuick').classList.toggle('active',!detailed);$('saleDetailed').classList.toggle('active',detailed)}
+$('saleQuick').onclick=()=>setSaleMode(false);$('saleDetailed').onclick=()=>setSaleMode(true);$('saleDate').value=localDay();$('goalYear').value=new Date().getFullYear();
+for(const id of ['saleKg','salePrice'])$(id).addEventListener('input',()=>{$('saleTotal').textContent=eur(Number($('saleKg').value)*Number($('salePrice').value))});
+$('cancelSale').onclick=resetSale;
+function saleCanEdit(s){return familyRole==='admin'||(familyRole==='contributor'&&s.created_by===cloudUser?.id)}
+function renderSalesList(){const root=$('salesList');if(!root)return;root.replaceChildren();if(!salesState.items.length){root.append(makeText('p','Aucune vente enregistrée.','small'));return}for(const s of salesState.items){let card=document.createElement('div');card.className='entryrow';let heading=makeText('strong',`${s.buyer_name} · ${eur(s.total_eur||Number(s.quantity_kg)*Number(s.unit_price_eur))}`);let note=makeText('div',`${s.sold_at} · ${kgfmt(s.quantity_kg)} × ${eur(s.unit_price_eur)}/kg · ${s.payment_status==='paid'?'Payé':'En attente'} · ${s.created_by===cloudUser?.id?'Saisie par vous':'Autre membre'}`,'small');const actions=document.createElement('div');actions.className='controls';const receipt=document.createElement('button');receipt.textContent='↓ Récépissé';receipt.onclick=()=>downloadSalesReceipt(s);actions.append(receipt);if(s.receipt_path){const view=document.createElement('button');view.textContent='Voir pièce jointe';view.onclick=async()=>{const {data:link,error}=await cloudClient.storage.from('castanea-receipts').createSignedUrl(s.receipt_path,120);if(error){toast(error.message);return}window.open(link.signedUrl,'_blank','noopener')};actions.append(view)}if(saleCanEdit(s)){const edit=document.createElement('button');edit.textContent='Modifier';edit.onclick=()=>{salesState.editId=s.id;$('saleBuyer').value=s.buyer_name;$('saleDate').value=s.sold_at;$('saleKg').value=s.quantity_kg;$('salePrice').value=s.unit_price_eur;$('saleStatus').value=s.payment_status;$('salePayment').value=s.payment_method||'';$('saleCaliber').value=s.caliber||'';$('saleNotes').value=s.notes||'';$('saleTotal').textContent=eur(s.total_eur||Number(s.quantity_kg)*Number(s.unit_price_eur));$('saveSale').textContent='Enregistrer les modifications';$('cancelSale').hidden=false;setSaleMode(true);$('saleForm').scrollIntoView({behavior:'smooth',block:'start'})};const del=document.createElement('button');del.className='danger';del.textContent='Supprimer';del.onclick=async()=>{if(!confirm('Supprimer cette vente ? Le justificatif joint pourra rester archivé dans Storage.'))return;const {error}=await cloudClient.from('castanea_sales').delete().eq('id',s.id).eq('property_id',familyId);if(error)toast(error.message);else{toast('Vente supprimée');await loadCommerce()}};actions.append(edit,del)}card.append(heading,note,actions);root.append(card)}}
+$('saleForm').onsubmit=async e=>{e.preventDefault();if(!commerceReady()||familyRole==='viewer'){toast('Accès Business non autorisé');return}const buyer=$('saleBuyer').value.trim(),quantity=Number($('saleKg').value),price=Number($('salePrice').value),sold=$('saleDate').value;if(!buyer||!/^\d{4}-\d{2}-\d{2}$/.test(sold)||!Number.isFinite(quantity)||quantity<=0||!Number.isFinite(price)||price<0){toast('Vérifiez la vente');return}const existing=salesState.items.find(x=>x.id===salesState.editId);if(existing&&!saleCanEdit(existing)){toast('Cette vente appartient à un autre membre');return}let payload={buyer_name:buyer,sold_at:sold,quantity_kg:quantity,unit_price_eur:price,payment_status:$('saleStatus').value,payment_method:$('salePayment').value||null,caliber:$('saleCaliber').value||null,notes:$('saleNotes').value.trim()||null};$('saveSale').disabled=true;try{let resp;if(existing){resp=await cloudClient.from('castanea_sales').update(payload).eq('id',existing.id).select('*').single()}else{payload={...payload,property_id:familyId,created_by:cloudUser.id};resp=await cloudClient.from('castanea_sales').insert(payload).select('*').single()}if(resp.error)throw resp.error;const f=$('saleReceipt').files[0];if(f){if(f.size>8*1024*1024||!['image/jpeg','image/png','image/webp','application/pdf'].includes(f.type))throw Error('Justificatif non conforme (JPG, PNG, WEBP, PDF ; maximum 8 Mo). La vente a toutefois été enregistrée.');const ext={'image/jpeg':'jpg','image/png':'png','image/webp':'webp','application/pdf':'pdf'}[f.type];const path=`${familyId}/${resp.data.id}/${uid()}.${ext}`;const upload=await cloudClient.storage.from('castanea-receipts').upload(path,f,{contentType:f.type,upsert:false});if(upload.error)throw Error('Vente enregistrée, pièce jointe non envoyée : '+upload.error.message);const patch=await cloudClient.from('castanea_sales').update({receipt_path:path}).eq('id',resp.data.id);if(patch.error)throw Error('Fichier envoyé mais non associé : '+patch.error.message)}resetSale();toast('Vente enregistrée dans le registre familial');await loadCommerce()}catch(err){toast(err.message);$('businessStatus').textContent=err.message;await loadCommerce()}finally{$('saveSale').disabled=false}};
+$('refreshSales').onclick=()=>loadCommerce();$('goalYear').onchange=()=>{const g=salesState.goals.find(x=>x.campaign_year===Number($('goalYear').value));$('goalHarvest').value=g?.harvest_target_kg??0;$('goalRevenue').value=g?.revenue_target_eur??0;$('goalSold').value=g?.sold_target_kg??0;refreshCommerce()};
+$('saveGoals').onclick=async()=>{if(!commerceReady()||familyRole!=='admin'){toast('Réservé aux administrateurs');return}const y=Number($('goalYear').value),h=Number($('goalHarvest').value),r=Number($('goalRevenue').value),s=Number($('goalSold').value);if(!Number.isInteger(y)||y<2020||y>2100||![h,r,s].every(n=>Number.isFinite(n)&&n>=0)){toast('Objectifs invalides');return}const {error}=await cloudClient.from('castanea_goals').upsert({property_id:familyId,campaign_year:y,harvest_target_kg:h,revenue_target_eur:r,sold_target_kg:s,updated_by:cloudUser.id},{onConflict:'property_id,campaign_year'});if(error){toast('Objectifs : '+error.message);return}toast('Objectifs familiaux enregistrés');await loadCommerce()};
+$('exportSales').onclick=()=>{const heads=['Date','Acheteur','Quantité kg','Prix/kg EUR','Total EUR','Paiement','Mode','Calibre','Notes','Auteur'];const rows=salesState.items.map(s=>[s.sold_at,s.buyer_name,s.quantity_kg,s.unit_price_eur,s.total_eur,s.payment_status,s.payment_method||'',s.caliber||'',s.notes||'',s.created_by]);const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const blob=new Blob(['\ufeff'+[heads,...rows].map(a=>a.map(cell).join(';')).join('\r\n')],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='castanea-ventes-'+localDay()+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000)};
+// PDF autonome (sans bibliotheque externe), compatible Apercu/Fichiers sur iOS.
+function castaneaPdfBytes(parts){
+  const cp1252={8364:128,8218:130,402:131,8222:132,8230:133,8224:134,8225:135,710:136,8240:137,352:138,8249:139,338:140,381:142,8216:145,8217:146,8220:147,8221:148,8226:149,8211:150,8212:151,732:152,8482:153,353:154,8250:155,339:156,382:158,376:159};
+  const enc=(str)=>{const out=[];for(const char of String(str)){const c=char.codePointAt(0);out.push(c<256?c:(cp1252[c]??63))}return new Uint8Array(out)};
+  const chunks=[];let size=0;const add=(b)=>{const bytes=typeof b==='string'?enc(b):b;chunks.push(bytes);size+=bytes.length};
+  const offsets=[0];add('%PDF-1.4\n% CASTANEA PDF\n');
+  for(let i=0;i<parts.length;i++){offsets.push(size);add(`${i+1} 0 obj\n`);add(parts[i]);add('\nendobj\n')}
+  const xref=size;add(`xref\n0 ${parts.length+1}\n0000000000 65535 f \n`);
+  for(const off of offsets.slice(1))add(`${String(off).padStart(10,'0')} 00000 n \n`);
+  add(`trailer\n<< /Size ${parts.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  const bytes=new Uint8Array(size);let pos=0;for(const ch of chunks){bytes.set(ch,pos);pos+=ch.length}return bytes;
+}
+function downloadSalesReceipt(s){
+  // WinAnsi standard PDF font avoids remote script requests; Euro and French accents work.
+  const esc=t=>String(t??'').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)').replace(/[\r\n]/g,' ');
+  const stream=[];
+  const line=(x,y,str,size=12,bold=false)=>stream.push(`BT /${bold?'F2':'F1'} ${size} Tf ${x} ${y} Td (${esc(str)}) Tj ET`);
+  const rule=y=>stream.push(`0.79 0.85 0.80 RG 1 w 44 ${y} m 550 ${y} l S`);
+  stream.push('0.12 0.33 0.20 rg');line(48,772,'CASTANEA',25,true);
+  stream.push('0 0 0 rg');line(48,745,'RELEVÉ DE VENTE',15,true);
+  line(48,718,'Propriété de Paradela · Tabuaço',11);rule(702);
+  const d=new Date(s.sold_at+'T12:00:00').toLocaleDateString('fr-FR');
+  const total=eur(s.total_eur||Number(s.quantity_kg)*Number(s.unit_price_eur));
+  let y=671;
+  const item=(label,val)=>{line(48,y,label,11);line(230,y,String(val).slice(0,90),11,true);y-=34;rule(y+19)};
+  item('Référence',s.id);
+  item('Date de vente',d);
+  item('Acheteur',s.buyer_name);
+  item('Quantité vendue',kgfmt(s.quantity_kg));
+  item('Prix au kilo',eur(s.unit_price_eur));
+  item('Statut du paiement',s.payment_status==='paid'?'Payé':'En attente');
+  if(s.payment_method)item('Moyen de paiement',({cash:'Espèces',transfer:'Virement',card:'Carte',other:'Autre'})[s.payment_method]||s.payment_method);
+  if(s.caliber)item('Calibre',s.caliber);
+  y-=20;stream.push('0.91 0.96 0.91 rg');stream.push(`44 ${y-22} 510 58 re f`);stream.push('0.12 0.33 0.20 rg');line(58,y+4,'TOTAL DE LA VENTE',13,true);line(379,y+2,total,17,true);stream.push('0 0 0 rg');y-=65;
+  if(s.notes){line(48,y,'Observations :',11,true);y-=18;const words=String(s.notes).split(/\s+/);let current='';let count=0;for(const word of words){if((current+' '+word).trim().length>92){line(48,y,current,9);y-=15;current=word;count++}else current=(current+' '+word).trim();if(count>=6)break}if(current&&count<7){line(48,y,current,9);y-=20}}
+  line(48,98,'Relevé interne — ne constitue pas automatiquement une facture.',9);
+  line(48,83,'Ne prouve pas, à lui seul, la réception du paiement.',9);
+  line(48,56,'CASTANEA · Registre familial des ventes',9);
+  const content=stream.join('\n')+'\n';
+  const length=[...content].reduce((sum,c)=>sum+((c.codePointAt(0)>255&&c!=='€')?1:1),0); // encoded in WinAnsi: one byte per character
+  const parts=[
+    '<< /Type /Catalog /Pages 2 0 R >>',
+    '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>',
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>',
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>',
+    `<< /Length ${length} >>\nstream\n${content}endstream`
+  ];
+  const bytes=castaneaPdfBytes(parts);
+  const blob=new Blob([bytes],{type:'application/pdf'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='castanea-recepissee-'+s.sold_at+'-'+s.id.slice(0,8)+'.pdf';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+
+// Actualisation inter-comptes, indépendante de la synchronisation du périmètre.
+setInterval(()=>{if(document.visibilityState==='visible'&&commerceReady())loadCommerce()},30000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&commerceReady())loadCommerce()});
+
+
+// V0.7.1 : graphiques SVG locaux, sans CDN additionnel ni modification de Supabase.
+const analyticsSvgNS='http://www.w3.org/2000/svg';
+function analyticsNode(name, attrs={}, parent){const e=document.createElementNS(analyticsSvgNS,name);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(parent)parent.append(e);return e}
+function analyticsText(svg,x,y,label,opts={}){const t=analyticsNode('text',{x,y,fill:opts.fill||'#b9cbb9','font-size':opts.size||11,'text-anchor':opts.anchor||'middle'},svg);t.textContent=String(label);return t}
+function analyticsEmpty(id,message){const root=$(id);if(!root)return;root.replaceChildren();const d=document.createElement('div');d.className='analytics-empty';d.textContent=message;root.append(d)}
+function analyticsFormat(n,unit){return Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:unit==='€'?2:1})+' '+unit}
+function analyticsPeriodKey(date,unit){const day=String(date||'').slice(0,10);if(!/^\d{4}-\d{2}-\d{2}$/.test(day))return null;if(unit==='day')return day;if(unit==='month')return day.slice(0,7);const d=new Date(day+'T12:00:00Z');if(Number.isNaN(d.getTime()))return null;const dow=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()-dow+3);const yr=d.getUTCFullYear();const jan4=new Date(Date.UTC(yr,0,4));const jan4Thu=new Date(jan4);jan4Thu.setUTCDate(4+(3-(jan4.getUTCDay()+6)%7));const wk=1+Math.round((d-jan4Thu)/604800000);return yr+'-S'+String(wk).padStart(2,'0')}
+function analyticsShort(k,period){if(period==='month')return k.slice(5) + '/' + k.slice(2,4);if(period==='day')return k.slice(8)+'/'+k.slice(5,7);return k.replace(/^\d{4}-/,'')}
+function analyticsXY(rootId,values,type,unit){const root=$(rootId);if(!root)return;root.replaceChildren();if(!values.length){analyticsEmpty(rootId,'Aucune donnée sur cette période.');return}
+ if(values.length===1){const item=document.createElement('div');item.className='analytics-point-summary';const label=document.createElement('span');label.textContent='Période : '+analyticsShort(values[0][0],$('analyticsPeriod').value);const num=document.createElement('b');num.textContent=analyticsFormat(values[0][1],unit);item.append(label,num);root.append(item);return;}
+ const W=530,H=240,left=48,right=12,top=14,bottom=44;const plotW=W-left-right,plotH=H-top-bottom,max=Math.max(...values.map(x=>x[1]),1)*1.15;
+ const svg=analyticsNode('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':type==='line'?'Courbe de récolte':'Histogramme'},root);
+ for(let j=0;j<=4;j++){const y=top+j*plotH/4;analyticsNode('line',{x1:left,y1:y,x2:W-right,y2:y,stroke:'#395442','stroke-dasharray':'3 5'},svg);analyticsText(svg,left-7,y+4,analyticsFormat(max*(4-j)/4,unit),{anchor:'end',size:10})}
+ const xAt=i=>left+(i+.5)*plotW/values.length, yAt=v=>top+plotH-(Number(v)||0)/max*plotH;
+ if(type==='line'){const coords=values.map(([k,v],i)=>[xAt(i),yAt(v)]);analyticsNode('path',{d:coords.map(([x,y],i)=>(i?'L':'M')+x+' '+y).join(' '),fill:'none',stroke:'#b6db83','stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'},svg);coords.forEach(([x,y],i)=>{const c=analyticsNode('circle',{cx:x,cy:y,r:4,fill:'#b6db83'},svg);analyticsNode('title',{},c).textContent=values[i][0]+' : '+analyticsFormat(values[i][1],unit);c.style.cursor='pointer';c.setAttribute('tabindex','0');c.setAttribute('role','button');c.setAttribute('aria-label',values[i][0]+' : '+analyticsFormat(values[i][1],unit));c.addEventListener('click',()=>toast(values[i][0]+' : '+analyticsFormat(values[i][1],unit)));c.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();toast(values[i][0]+' : '+analyticsFormat(values[i][1],unit))}})})}
+ else{const width=Math.max(4,Math.min(38,plotW/values.length*.65));values.forEach(([k,v],i)=>{const y=yAt(v);const bar=analyticsNode('rect',{x:xAt(i)-width/2,y,width,height:Math.max(0.5,top+plotH-y),rx:4,fill:'#a3cf78'},svg);analyticsNode('title',{},bar).textContent=k+' : '+analyticsFormat(v,unit);bar.style.cursor='pointer';bar.addEventListener('click',()=>toast(k+' : '+analyticsFormat(v,unit)))})}
+ const stride=Math.max(1,Math.ceil(values.length/7));values.forEach(([k,v],i)=>{if(i%stride===0||i===values.length-1)analyticsText(svg,xAt(i),H-19,analyticsShort(k,$('analyticsPeriod').value),{size:10})});}
+function analyticsSectorChart(entries){const root=$('analyticsSectorChart');root.replaceChildren();const sums=new Map();for(const e of entries){const zone=data.zones.find(z=>String(z.id)===String(e.zoneId));const name=zone?zone.name:'Sans secteur';sums.set(name,(sums.get(name)||0)+Number(e.kg||0))}const rows=[...sums].filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);if(!rows.length){analyticsEmpty('analyticsSectorChart',data.zones.length?'Aucune récolte pour les secteurs sélectionnés.':'Aucun secteur dessiné. Les résultats apparaîtront après les premières récoltes.');return}if(rows.length===1){const item=document.createElement('div');item.className='analytics-point-summary';const label=document.createElement('span');label.textContent=rows[0][0];const num=document.createElement('b');num.textContent=analyticsFormat(rows[0][1],'kg');item.append(label,num);root.append(item);return;}const shown=rows.slice(0,12),W=530,H=shown.length*35+26,left=134;const max=Math.max(...shown.map(x=>x[1]),1);const svg=analyticsNode('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Récoltes classées par secteur'},root);shown.forEach(([label,value],i)=>{const y=12+i*35;analyticsText(svg,left-9,y+14,label.length>20?label.slice(0,19)+'…':label,{anchor:'end',size:12});const rect=analyticsNode('rect',{x:left,y:y+2,width:(W-left-75)*value/max,height:20,rx:4,fill:'#a6d27d'},svg);analyticsNode('title',{},rect).textContent=label+' : '+analyticsFormat(value,'kg');analyticsText(svg,Math.min(W-5,left+(W-left-75)*value/max+7),y+16,analyticsFormat(value,'kg'),{anchor:'start',size:11})})}
+function analyticsBuyerChart(sales){const root=$('analyticsBuyerChart');root.replaceChildren();const sums=new Map();for(const s of sales){const name=(s.buyer_name||'Acheteur non précisé').trim();const total=Number(s.total_eur??(Number(s.quantity_kg)*Number(s.unit_price_eur)))||0;sums.set(name,(sums.get(name)||0)+total)}const entries=[...sums].filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);if(!entries.length){analyticsEmpty('analyticsBuyerChart','Aucune vente enregistrée pour la campagne.');return}
+ if(entries.length===1){
+   const card=document.createElement('div');card.className='analytics-buyer-single';
+   const info=document.createElement('div');info.style.minWidth='0';
+   const name=document.createElement('div');name.className='buyer-name';name.textContent=entries[0][0];
+   const subtitle=document.createElement('div');subtitle.className='buyer-sub';subtitle.textContent='Acheteur unique de la campagne';
+   info.append(name,subtitle);
+   const metrics=document.createElement('div');
+   const amount=document.createElement('div');amount.className='buyer-value';amount.textContent=analyticsFormat(entries[0][1],'€');
+   const share=document.createElement('div');share.className='buyer-share';share.textContent='100 % du chiffre d’affaires';
+   metrics.append(amount,share);card.append(info,metrics);root.append(card);return;
+ }
+ const top=entries.slice(0,5),remainder=entries.slice(5).reduce((n,x)=>n+x[1],0);if(remainder)top.push(['Autres acheteurs',remainder]);const total=top.reduce((n,x)=>n+x[1],0),colors=['#b4d980','#73ab72','#4b8968','#d6b86a','#7bb8a8','#b39cc6'];const svg=analyticsNode('svg',{viewBox:'0 0 530 225',role:'img','aria-label':'Diagramme circulaire des ventes par acheteur'},root);let acc=0;const cx=115,cy=110,r=72,circ=2*Math.PI*r;top.forEach(([name,v],i)=>{const seg=analyticsNode('circle',{cx,cy,r,fill:'none',stroke:colors[i], 'stroke-width':30,'stroke-dasharray':`${v/total*circ} ${circ}`, 'stroke-dashoffset':-acc*circ/total,transform:`rotate(-90 ${cx} ${cy})`},svg);analyticsNode('title',{},seg).textContent=name+' : '+analyticsFormat(v,'€');acc+=v});analyticsText(svg,cx,106,analyticsFormat(total,'€'),{size:16,fill:'#eaf5df'});analyticsText(svg,cx,127,'de chiffre d’affaires',{size:10});top.forEach(([name,v],i)=>{const y=30+i*33;analyticsNode('rect',{x:225,y:y-11,width:12,height:12,rx:2,fill:colors[i]},svg);analyticsText(svg,246,y,(name.length>17?name.slice(0,16)+'…':name)+' · '+(100*v/total).toLocaleString('fr-FR',{maximumFractionDigits:1})+' %',{anchor:'start',size:11})})}
+function renderAnalytics(){if(!$('analyticsPanel'))return;const years=new Set([new Date().getFullYear()]);for(const e of data.entries){const y=Number(String(e.date||'').slice(0,4));if(y>2000&&y<2100)years.add(y)}for(const s of salesState.items){const y=Number(String(s.sold_at||'').slice(0,4));if(y>2000&&y<2100)years.add(y)}const ysel=$('analyticsYear');const current=ysel.value||String(new Date().getFullYear());const options=[...years].sort((a,b)=>b-a);ysel.replaceChildren();options.forEach(y=>{const opt=document.createElement('option');opt.value=String(y);opt.textContent=String(y);ysel.append(opt)});ysel.value=options.includes(Number(current))?current:String(options[0]);const year=ysel.value;const zsel=$('analyticsZone'),wanted=zsel.value||'all';zsel.replaceChildren();const all=document.createElement('option');all.value='all';all.textContent='Tous les secteurs';zsel.append(all);data.zones.forEach(z=>{const opt=document.createElement('option');opt.value=String(z.id);opt.textContent=z.name;zsel.append(opt)});zsel.value=wanted==='all'||data.zones.some(z=>String(z.id)===wanted)?wanted:'all';const zone=zsel.value;
+ const harvest=data.entries.filter(e=>String(e.date||'').startsWith(year)&&(zone==='all'?true:String(e.zoneId||'')===zone));const sales=salesState.items.filter(s=>String(s.sold_at||'').startsWith(year));const harvested=harvest.reduce((n,e)=>n+(Number(e.kg)||0),0),sold=sales.reduce((n,s)=>n+(Number(s.quantity_kg)||0),0),revenue=sales.reduce((n,s)=>n+(Number(s.total_eur??(Number(s.quantity_kg)*Number(s.unit_price_eur)))||0),0);
+ $('analyticsHarvestKpi').textContent=analyticsFormat(harvested,'kg');$('analyticsSoldKpi').textContent=analyticsFormat(sold,'kg');$('analyticsRevenueKpi').textContent=analyticsFormat(revenue,'€');$('analyticsStockKpi').textContent=zone==='all'?analyticsFormat(harvested-sold,'kg'):'—';
+ const period=$('analyticsPeriod').value;const series=(arr,dateKey,value)=>{const map=new Map();for(const item of arr){const k=analyticsPeriodKey(item[dateKey],period);if(k)map.set(k,(map.get(k)||0)+Number(value(item)||0))}return [...map].sort((a,b)=>a[0].localeCompare(b[0]))};
+ analyticsXY('analyticsHarvestChart',series(harvest,'date',e=>e.kg),'line','kg');analyticsXY('analyticsRevenueChart',series(sales,'sold_at',s=>s.total_eur??Number(s.quantity_kg)*Number(s.unit_price_eur)),'bar','€');analyticsSectorChart(harvest);analyticsBuyerChart(sales);
+}
+let analyticsView='all';
+function setAnalyticsView(view){analyticsView=['all','harvest','business'].includes(view)?view:'all';document.querySelectorAll('[data-analytics-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.analyticsView===analyticsView)));document.querySelectorAll('[data-analytics-category]').forEach(el=>{el.hidden=analyticsView!=='all'&&el.dataset.analyticsCategory!==analyticsView})}
+document.querySelectorAll('[data-analytics-view]').forEach(b=>b.addEventListener('click',()=>setAnalyticsView(b.dataset.analyticsView)));
+setAnalyticsView('all');
+['analyticsYear','analyticsPeriod','analyticsZone'].forEach(id=>$(id).addEventListener('change',renderAnalytics));
+
+try{localDirty=localStorage.getItem('castanea-cloud-dirty')==='true';let saved=JSON.parse(localStorage.getItem(KEY));if(saved&&Array.isArray(saved.zones)&&Array.isArray(saved.entries)){data={...saved,version:2,boundary:Array.isArray(saved.boundary)?saved.boundary:null}}}catch(e){}refresh(true);lockBoundary();switchTab('Home');fetchWeather();initCloud()})();
+</script></body></html>
