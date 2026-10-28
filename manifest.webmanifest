@@ -1,0 +1,26 @@
+{
+  "id": "/Castanea/",
+  "name": "CASTANEA — Gestion de la châtaigneraie",
+  "short_name": "CASTANEA",
+  "description": "Récoltes, secteurs, ventes et objectifs de la propriété familiale de Paradela.",
+  "lang": "fr",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#091611",
+  "theme_color": "#10241b",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

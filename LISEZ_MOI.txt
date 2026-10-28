@@ -1,0 +1,12 @@
+CASTANEA V1.0.0 — PWA INSTALLABLE (sur la base de V0.9.6)
+
+1. Avant installation : sauvegardez en Export JSON depuis les appareils de référence.
+2. Déposez TOUS les fichiers et le dossier icons/ à la RACINE du dépôt GitHub Castanea :
+   index.html, manifest.webmanifest, sw.js, offline.html, icons/icon-180.png, icons/icon-192.png, icons/icon-512.png.
+3. Vérifiez le déploiement GitHub Pages : https://caramjoker-cpu.github.io/Castanea/?v=1.0.0
+4. iOS/iPadOS : Safari → Partager → Sur l’écran d’accueil → Ouvrir comme app web → Ajouter.
+5. Android : Chrome → menu → Installer l’application / Ajouter à l’écran d’accueil.
+6. Important : l’application installée peut disposer de son PROPRE stockage et paraître vide au premier lancement. Configurez Supabase avec l’URL et la clé PUBLIQUE, connectez-vous au même compte familial, puis récupérez les données cloud après avoir vérifié qu’aucune donnée locale n’est à conserver. N’envoyez pas d’état vide.
+7. NE VIDEZ PAS les données Safari avant d’avoir vérifié périmètre, récoltes, ventes et statut cloud dans l’application installée.
+8. Le service worker ne met pas en cache les données ni les API. Une connexion Internet reste nécessaire pour la synchronisation.
+9. Aucun SQL supplémentaire. Le périmètre verrouillé, les comptes familiaux et la logique métier sont conservés.
